@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 
 class AnnoLex(models.Model)
     KwicL = models.CharField(max_length=128)
@@ -8,3 +9,4 @@ class AnnoLex(models.Model)
     spellcolfreq = models.IntegerField()
     wordid = models.CharField(max_length=45,primay_key=True)
 
+admin.site.register(AnnoLex)
