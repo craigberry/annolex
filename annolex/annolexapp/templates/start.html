@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <title>start</title>
+  <title>AnnoLex -- Lexical Annotation and Correction</title>
   <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/" />
 </head>
 
@@ -16,17 +16,41 @@
   <col />
   <col />
   <col />
-  <tbody>
-  {% for word in words %}
+  <col />
+  <thead>
     <tr>
-      <td>{{ word.KwicL }} <b>{{ word.spell }}</b> {{ word.KwicR }}</td>
+      <th>Spelling in Context</th>
+      <th>Spelling</th>
+      <th>Lemma/POS</th>
+      <th>Frequency</th>
+      <th>Monk Context</th>
+    </tr>
+  <tbody>
+  {% for word in words.object_list %}
+    <tr>
+      <td>{{ word.KwicL }} <b style="color:red">{{ word.spell }}</b> {{ word.KwicR }}</td>
+      <td>{{ word.spell }}</td>
       <td>{{ word.lempos }}</td>
       <td>{{ word.spellcolfreq }}</td>
-      <td>{{ word.wordid }}</td>
+      <td><a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> </td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if words.has_previous %}
+            <a href="?page={{ words.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current">
+            Page {{ words.number }} of {{ words.paginator.num_pages }}.
+        </span>
+
+        {% if words.has_next %}
+            <a href="?page={{ words.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
 </body>
 </html>
