@@ -21,7 +21,8 @@
     <tr>
       <th>Spelling in Context</th>
       <th>Spelling</th>
-      <th>Lemma/POS</th>
+      <th>Lemma</th>
+      <th>POS</th>
       <th>Frequency</th>
       <th>Monk Context</th>
     </tr>
@@ -29,9 +30,10 @@
   <tbody>
   {% for word in words.object_list %}
     <tr>
-      <td>{{ word.KwicL }} <b style="color:red">{{ word.spell }}</b> {{ word.KwicR }}</td>
-      <td>{{ word.spell }}</td>
-      <td>{{ word.lempos }}</td>
+      <td>{{ word.KwicL }} <b style="color:red">{{ word.spelling }}</b> {{ word.KwicR }}</td>
+      <td>{{ word.spelling }}</td>
+      <td>{{ word.lemma }}</td>
+      <td>{{ word.pos }}</td>
       <td>{{ word.spellcolfreq }}</td>
       <td><a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> </td>
     </tr>
