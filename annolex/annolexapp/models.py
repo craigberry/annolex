@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
 class AnnoLex(models.Model):
     KwicL        = models.CharField(max_length=128)
@@ -43,4 +44,7 @@ class Correction(models.Model):
     annotation      = models.TextField()
 
 admin.site.register(Correction)
-    
+
+class CorrectionForm(ModelForm):
+    class Meta:
+        model = Correction    
