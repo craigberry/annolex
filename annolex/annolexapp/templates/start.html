@@ -5,13 +5,65 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <title>AnnoLex -- Lexical Annotation and Correction</title>
-  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/" />
+  <style type ="text/css">
+    html { 
+      padding:0px;
+      margin:0px;
+    }
+    
+    body {
+      background-color: #0355b1;
+      font-size: 12px;
+      font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
+      color:black;  
+      padding:0px 20px;
+      margin:0px;
+    }
+    	
+    #main {
+      border:1px solid #564b47; 
+      background-color:#fff;
+    }
+    #main #menu {
+      border-left:1px dotted #000; 
+      border-bottom:1px dotted #000;
+      float:right;
+      width:250px;
+      background-color:#faf0e6;
+      margin:0px 0px 20px 20px;
+    }
+    table.wordlist {
+      border-width: 1px;
+      border-spacing: ;
+      border-style: outset;
+      border-color: black;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    table.wordlist th {
+      border-width: 1px;
+      padding: 1px;
+      border-style: inset;
+      border-color: gray;
+      background-color: white;
+    }
+    table.wordlist td {
+      border-width: 1px;
+      padding: 1px;
+      border-style: inset;
+      border-color: gray;
+      background-color: white;
+    }
+  </style>
 </head>
 
 <body>
 
-
-<table border="1">
+<div id="main">
+  <div id="menu">
+    <p>The menu goes here.</p>
+  </div>
+<table class="wordlist">
   <col />
   <col />
   <col />
@@ -43,7 +95,7 @@
 <div class="pagination">
     <span class="step-links">
         {% if words.has_previous %}
-            <a href="?page={{ words.previous_page_number }}">previous</a>
+            <a href="?page={{ words.previous_page_number }}">Previous</a>
         {% endif %}
 
         <span class="current">
@@ -51,9 +103,10 @@
         </span>
 
         {% if words.has_next %}
-            <a href="?page={{ words.next_page_number }}">next</a>
+            <a href="?page={{ words.next_page_number }}">Next</a>
         {% endif %}
     </span>
+</div>
 </div>
 </body>
 </html>
