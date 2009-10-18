@@ -20,9 +20,9 @@ admin.site.register(AnnoLex)
 # two are more words are being joined.
 
 OPERATIONS = (
-    (1, 'UPDATE'),
-    (2, 'INSERT'),
-    (3, 'DELETE'),
+    (1, 'Update'),
+    (2, 'Insert'),
+    (3, 'Delete'),
 )
 
 class Correction(models.Model):

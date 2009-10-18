@@ -12,7 +12,7 @@
     }
     
     body {
-      background-color: #0355b1;
+      background-color: #66ccff;
       font-size: 12px;
       font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
       color:black;  
@@ -28,7 +28,7 @@
       border-left:1px dotted #000; 
       border-bottom:1px dotted #000;
       float:right;
-      width:250px;
+      width:380px;
       background-color:#faf0e6;
       margin:0px 0px 20px 20px;
     }
@@ -61,9 +61,38 @@
 
 <div id="main">
   <div id="menu">
-    <p>The menu goes here.</p>
+    <p>
+    <form action="" method="POST">
+    <h3>Edit Word Instance {{ editform.wordid_from }}</h3>
+    <table>
+    <col align="right"/>
+    <col />
+    <col />
+    <thead>
+    <tr><td></td><td align="center">Current</td><td align="center">New</td></tr>
+    <tr>
+    </thead>
+    <tbody>
+    <td>Spelling:</td> <td>{{ editform.spelling_from }}</td><td>{{ editform.spelling_to }}</td>
+    </tr>
+    <tr>
+    <td>Lemma:</td> <td>{{ editform.lemma_from }}</td> <td> {{ editform.lemma_to }}</td>
+    </tr>
+    <tr>
+    <td>POS:</td> <td>{{ editform.pos_from }}</td> <td>{{ editform.pos_to }}</td>
+    </tr>
+    </tbody>
+    </table>
+    <table>
+    <tr><td colspan="3">Notes:</td></tr>
+    <tr><td colspan="3">{{ editform.annotation }}</td></tr>
+    <tr><td>{{ editform.operation }}</td><td><input type="submit" name="which_post" value="Save" id="submit"></td><td></td></tr>
+    </table>
+    </form>
+    </p>
   </div>
 <table class="wordlist">
+  <col />
   <col />
   <col />
   <col />
@@ -75,7 +104,8 @@
       <th>Spelling</th>
       <th>Lemma</th>
       <th>POS</th>
-      <th>Frequency</th>
+<!--      <th>Frequency</th> -->
+      <th>Edit</th>
       <th>Monk Context</th>
     </tr>
   </thead>
@@ -86,7 +116,16 @@
       <td>{{ word.spelling }}</td>
       <td>{{ word.lemma }}</td>
       <td>{{ word.pos }}</td>
-      <td>{{ word.spellcolfreq }}</td>
+<!--      <td>{{ word.spellcolfreq }}</td> -->
+      <td>
+        <form action="" method="post">
+          <input type="hidden" name="wordid_from" value="{{ word.wordid }}" />
+          <input type="hidden" name="spelling_from" value="{{ word.spelling }}" />
+          <input type="hidden" name="lemma_from" value="{{ word.lemma }}" />
+          <input type="hidden" name="pos_from" value="{{ word.pos }}" />
+          <input type="submit" name="which_post" value="Edit" />
+        </form>
+      </td>
       <td><a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> </td>
     </tr>
   {% endfor %}
