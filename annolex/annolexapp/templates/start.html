@@ -10,31 +10,37 @@
       padding:0px;
       margin:0px;
     }
-    
     body {
-      background-color: #66ccff;
+      background-color: #003377;
       font-size: 12px;
-      font-family: Verdana, Arial, SunSans-Regular, Sans-Serif;
+      font-family: Verdana, Arial, Sans-Serif;
       color:black;  
       padding:0px 20px;
       margin:0px;
     }
-    	
+    a {text-decoration: none;}
+    #topbar {
+      width:100%;
+      background-color: #003377;
+      font-size: 14px;
+    }
+    #topbar a:link, #topbar a:visited {color:white;}
+    #topbar a {padding:0 7px;}
+    #topbar a:hover {color:#fff; font-weight: bold; }
     #main {
       border:1px solid #564b47; 
       background-color:#fff;
     }
-    #main #menu {
+    #main #editbox {
       border-left:1px dotted #000; 
+      border-top:1px dotted #000; 
       border-bottom:1px dotted #000;
       float:right;
-      width:380px;
-      background-color:#faf0e6;
+      background-color:#99ccff;
       margin:0px 0px 20px 20px;
     }
     table.wordlist {
       border-width: 1px;
-      border-spacing: ;
       border-style: outset;
       border-color: black;
       border-collapse: collapse;
@@ -47,7 +53,7 @@
       border-color: gray;
       background-color: white;
     }
-    table.wordlist td {
+    table.wordlist tr {
       border-width: 1px;
       padding: 1px;
       border-style: inset;
@@ -58,36 +64,63 @@
 </head>
 
 <body>
+  <div id ="topbar">
+     <a href="/"> Home </a> &middot; 
+     <a href="/about/"> About </a> &middot; 
+     {% if user.is_authenticated %}
+     <a href="accounts/logout"> Log out {{ user.username }} </a>
+     
+     {% else %}
+     <a href="accounts/login/?next=/annolex/"> Login </a>
+    {% endif %}
+  </div
 
 <div id="main">
-  <div id="menu">
+  <div id="editbox">
     <p>
     <form action="" method="POST">
-    <h3>Edit Word Instance {{ editform.wordid_from }}</h3>
+    <h3><center>Edit Word Instance {{ current_word.wordid }}</center></h3>
     <table>
     <col align="right"/>
     <col />
-    <col />
     <thead>
-    <tr><td></td><td align="center">Current</td><td align="center">New</td></tr>
+    <tr><td></td><td align="center">New values</td></tr>
     <tr>
     </thead>
     <tbody>
-    <td>Spelling:</td> <td>{{ editform.spelling_from }}</td><td>{{ editform.spelling_to }}</td>
+    <td>Spelling ({{ current_word.spelling }}):</td><td>{{ editform.spelling_to }}</td>
     </tr>
     <tr>
-    <td>Lemma:</td> <td>{{ editform.lemma_from }}</td> <td> {{ editform.lemma_to }}</td>
+    <td>Lemma ({{ current_word.lemma }}):</td> <td> {{ editform.lemma_to }}</td>
     </tr>
     <tr>
-    <td>POS:</td> <td>{{ editform.pos_from }}</td> <td>{{ editform.pos_to }}</td>
+    <td>POS ({{ current_word.pos }}):</td> <td>{{ editform.pos_to }}</td>
     </tr>
     </tbody>
     </table>
     <table>
-    <tr><td colspan="3">Notes:</td></tr>
+    <tr><td colspan="3">Annotation:</td></tr>
     <tr><td colspan="3">{{ editform.annotation }}</td></tr>
     <tr><td>{{ editform.operation }}</td><td><input type="submit" name="which_post" value="Save" id="submit"></td><td></td></tr>
     </table>
+    <div id="editbox_errors" style="color: red;">
+        {% if editform.errors %}
+        <p>
+            Please correct the error{{ editform.errors|pluralize }} below.
+        </p>
+        <ul>
+        {% for field in editform %}
+          {% if field.errors %}
+            <li>{{ field.label }} <strong>{{ field.errors }}</strong></li>
+           {% endif %}
+        {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+      <input type="hidden" name="wordid_from" value="{{ current_word.wordid }}" />
+      <input type="hidden" name="spelling_from" value="{{ current_word.spelling }}" />
+      <input type="hidden" name="lemma_from" value="{{ current_word.lemma }}" />
+      <input type="hidden" name="pos_from" value="{{ current_word.pos }}" />
     </form>
     </p>
   </div>
@@ -111,8 +144,8 @@
   </thead>
   <tbody>
   {% for word in words.object_list %}
-    <tr>
-      <td>{{ word.KwicL }} <b style="color:red">{{ word.spelling }}</b> {{ word.KwicR }}</td>
+    <tr{% ifequal word.wordid current_word.wordid %} style="background-color: #99ccff;"{% endifequal %}>
+      <td>{{ word.KwicL }} <b style="color: red;">{{ word.spelling }}</b> {{ word.KwicR }}</td>
       <td>{{ word.spelling }}</td>
       <td>{{ word.lemma }}</td>
       <td>{{ word.pos }}</td>
@@ -126,8 +159,11 @@
           <input type="submit" name="which_post" value="Edit" />
         </form>
       </td>
-      <td><a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> </td>
+      <td>
+      <a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> 
+      </td>
     </tr>
+
   {% endfor %}
   </tbody>
 </table>
