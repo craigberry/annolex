@@ -1,0 +1,138 @@
+{% extends "start.html" %}
+{% block content %}
+<div id="main">
+  <div id="leftbar">
+  <div id="search">
+    <table>
+    <form action="" method="POST">
+    {{ searchform.as_table }}
+    <tr><td/><td><input type="submit" name="which_post" value="Search" id="submit"></td></tr>
+        <div id="searchform_errors" style="color: red;">
+            {% if searchform.errors %}
+            <p>
+                Please correct the error{{ editform.errors|pluralize }} below.
+            </p>
+            <ul>
+            {% for field in searchform %}
+              {% if field.errors %}
+                <li>{{ field.label }} <strong>{{ field.errors }}</strong></li>
+               {% endif %}
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </form>
+    </table>
+  </div>
+  <div id="editbox">
+    <form action="" method="POST">
+        <h3><center>Edit Word {{ current_word.wordid }}</center></h3>
+        <table>
+        <col align="right"/>
+        <col />
+        <thead>
+        <tr><td></td><td align="center">New values</td></tr>
+        <tr>
+        </thead>
+        <tbody>
+        <td>Spelling ({{ current_word.spelling }}):</td><td>{{ editform.spelling_to }}</td>
+        </tr>
+        <tr>
+        <td>Lemma ({{ current_word.lemma }}):</td> <td> {{ editform.lemma_to }}</td>
+        </tr>
+        <tr>
+        <td>POS ({{ current_word.pos }}):</td> <td>{{ editform.pos_to }}</td>
+        </tr>
+        </tbody>
+        </table>
+        <table>
+        <tr><td colspan="3">Annotation:</td></tr>
+        <tr><td colspan="3">{{ editform.annotation }}</td></tr>
+        <tr><td>{{ editform.operation }}</td><td><input type="submit" name="which_post" value="Save" id="submit"></td><td></td></tr>
+        </table>
+        <div id="editbox_errors" style="color: red;">
+            {% if editform.errors %}
+            <p>
+                Please correct the error{{ editform.errors|pluralize }} below.
+            </p>
+            <ul>
+            {% for field in editform %}
+              {% if field.errors %}
+                <li>{{ field.label }} <strong>{{ field.errors }}</strong></li>
+               {% endif %}
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+      <input type="hidden" name="wordid_from" value="{{ current_word.wordid }}" />
+      <input type="hidden" name="spelling_from" value="{{ current_word.spelling }}" />
+      <input type="hidden" name="lemma_from" value="{{ current_word.lemma }}" />
+      <input type="hidden" name="pos_from" value="{{ current_word.pos }}" />
+    <form action="" method="POST">
+  </div> <!-- editbox -->
+  </div>
+  <div id="wordlist">
+    <table class="wordlist">
+      <col />
+      <col />
+      <col />
+      <col />
+      <col />
+      <col />
+      <thead>
+        <tr>
+          <th>Spelling in Context</th>
+          <th>Spelling</th>
+          <th>Lemma</th>
+          <th>POS</th>
+    <!--      <th>Frequency</th> -->
+          <th>Edit</th>
+          <th>Monk Context</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for word in words.object_list %}
+        <tr{% ifequal word.wordid current_word.wordid %} style="background-color: #99ccff;"{% endifequal %}>
+          <td>{{ word.KwicL }} <b style="color: red;">{{ word.spelling }}</b> {{ word.KwicR }}</td>
+          <td>{{ word.spelling }}</td>
+          <td>{{ word.lemma }}</td>
+          <td>{{ word.pos }}</td>
+    <!--      <td>{{ word.spellcolfreq }}</td> -->
+          <td>
+            <form action="" method="post">
+              <input type="hidden" name="wordid_from" value="{{ word.wordid }}" />
+              <input type="hidden" name="spelling_from" value="{{ word.spelling }}" />
+              <input type="hidden" name="lemma_from" value="{{ word.lemma }}" />
+              <input type="hidden" name="pos_from" value="{{ word.pos }}" />
+              <input type="submit" name="which_post" value="Edit" />
+            </form>
+          </td>
+          <td>
+          <a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> 
+          </td>
+        </tr>
+    
+      {% endfor %}
+      </tbody>
+    </table>
+  </div> <!-- wordlist -->
+</div> <!-- main -->
+<div id="pagination" class="pagination" align="right">
+    <span class="step-links">
+        {% if words.has_previous %}
+            <a href="?page=1">First</a> &middot;
+            <a href="?page={{ words.previous_page_number }}">Previous</a> &middot;
+        {% endif %}
+
+        <span class="current">
+            Page {{ words.number }} of {{ words.paginator.num_pages }}
+        </span>
+
+        {% if words.has_next %}
+            &middot; <a href="?page={{ words.next_page_number }}">Next</a>
+            &middot;<a href="?page=last">Last</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}

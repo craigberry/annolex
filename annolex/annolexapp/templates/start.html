@@ -21,23 +21,36 @@
     a {text-decoration: none;}
     #topbar {
       width:100%;
+      margin:0px 0px 5px 0px;
       background-color: #003377;
       font-size: 14px;
+      color: white;
     }
     #topbar a:link, #topbar a:visited {color:white;}
     #topbar a {padding:0 7px;}
-    #topbar a:hover {color:#fff; font-weight: bold; }
+    #topbar a:hover {color:#fff; font-weight: bold;}
     #main {
       border:1px solid #564b47; 
       background-color:#fff;
     }
-    #main #editbox {
+    #main #leftbar {
+      float: left;
+    }
+    #main #search {
       border-left:1px dotted #000; 
+      border-right:1px dotted #000; 
       border-top:1px dotted #000; 
       border-bottom:1px dotted #000;
-      float:right;
       background-color:#99ccff;
-      margin:0px 0px 20px 20px;
+      margin:0px 20px 5px 0px;
+    }
+    #main #editbox {
+      border-left:1px dotted #000; 
+      border-right:1px dotted #000; 
+      border-top:1px dotted #000; 
+      border-bottom:1px dotted #000;
+      background-color:#99ccff;
+      margin:0px 20px 0px 0px;
     }
     table.wordlist {
       border-width: 1px;
@@ -54,134 +67,41 @@
       background-color: white;
     }
     table.wordlist tr {
+      background-color: white;
+    }
+    table.wordlist td {
       border-width: 1px;
       padding: 1px;
       border-style: inset;
       border-color: gray;
-      background-color: white;
     }
+    table.wordlist a:hover {font-weight: bold;}
+    #pagination {
+      width:100%;
+      background-color: #003377;
+      font-size: 14px;
+      color: white;
+    }
+    #pagination a:link, #pagination a:visited {color:white;}
+    #pagination a {padding:0 7px;}
+    #pagination a:hover {color:#fff; font-weight: bold;}
+
   </style>
 </head>
 
 <body>
   <div id ="topbar">
-     <a href="/"> Home </a> &middot; 
-     <a href="/about/"> About </a> &middot; 
+     <a href="/annolex/"> Home </a> &middot; 
+     <a href="/annolex/about/"> About </a> &middot; 
      {% if user.is_authenticated %}
-     <a href="accounts/logout"> Log out {{ user.username }} </a>
+     <a href="/annolex/accounts/logout"> Log out {{ user.username }} </a>
      
      {% else %}
-     <a href="accounts/login/?next=/annolex/"> Login </a>
+     <a href="/annolex/accounts/login/?next=/annolex/"> Login </a>
     {% endif %}
   </div
 
-<div id="main">
-  <div id="editbox">
-    <p>
-    <form action="" method="POST">
-    <h3><center>Edit Word Instance {{ current_word.wordid }}</center></h3>
-    <table>
-    <col align="right"/>
-    <col />
-    <thead>
-    <tr><td></td><td align="center">New values</td></tr>
-    <tr>
-    </thead>
-    <tbody>
-    <td>Spelling ({{ current_word.spelling }}):</td><td>{{ editform.spelling_to }}</td>
-    </tr>
-    <tr>
-    <td>Lemma ({{ current_word.lemma }}):</td> <td> {{ editform.lemma_to }}</td>
-    </tr>
-    <tr>
-    <td>POS ({{ current_word.pos }}):</td> <td>{{ editform.pos_to }}</td>
-    </tr>
-    </tbody>
-    </table>
-    <table>
-    <tr><td colspan="3">Annotation:</td></tr>
-    <tr><td colspan="3">{{ editform.annotation }}</td></tr>
-    <tr><td>{{ editform.operation }}</td><td><input type="submit" name="which_post" value="Save" id="submit"></td><td></td></tr>
-    </table>
-    <div id="editbox_errors" style="color: red;">
-        {% if editform.errors %}
-        <p>
-            Please correct the error{{ editform.errors|pluralize }} below.
-        </p>
-        <ul>
-        {% for field in editform %}
-          {% if field.errors %}
-            <li>{{ field.label }} <strong>{{ field.errors }}</strong></li>
-           {% endif %}
-        {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
-      <input type="hidden" name="wordid_from" value="{{ current_word.wordid }}" />
-      <input type="hidden" name="spelling_from" value="{{ current_word.spelling }}" />
-      <input type="hidden" name="lemma_from" value="{{ current_word.lemma }}" />
-      <input type="hidden" name="pos_from" value="{{ current_word.pos }}" />
-    </form>
-    </p>
-  </div>
-<table class="wordlist">
-  <col />
-  <col />
-  <col />
-  <col />
-  <col />
-  <col />
-  <thead>
-    <tr>
-      <th>Spelling in Context</th>
-      <th>Spelling</th>
-      <th>Lemma</th>
-      <th>POS</th>
-<!--      <th>Frequency</th> -->
-      <th>Edit</th>
-      <th>Monk Context</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for word in words.object_list %}
-    <tr{% ifequal word.wordid current_word.wordid %} style="background-color: #99ccff;"{% endifequal %}>
-      <td>{{ word.KwicL }} <b style="color: red;">{{ word.spelling }}</b> {{ word.KwicR }}</td>
-      <td>{{ word.spelling }}</td>
-      <td>{{ word.lemma }}</td>
-      <td>{{ word.pos }}</td>
-<!--      <td>{{ word.spellcolfreq }}</td> -->
-      <td>
-        <form action="" method="post">
-          <input type="hidden" name="wordid_from" value="{{ word.wordid }}" />
-          <input type="hidden" name="spelling_from" value="{{ word.spelling }}" />
-          <input type="hidden" name="lemma_from" value="{{ word.lemma }}" />
-          <input type="hidden" name="pos_from" value="{{ word.pos }}" />
-          <input type="submit" name="which_post" value="Edit" />
-        </form>
-      </td>
-      <td>
-      <a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> 
-      </td>
-    </tr>
+{% block content %}{% endblock %}
 
-  {% endfor %}
-  </tbody>
-</table>
-<div class="pagination">
-    <span class="step-links">
-        {% if words.has_previous %}
-            <a href="?page={{ words.previous_page_number }}">Previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ words.number }} of {{ words.paginator.num_pages }}.
-        </span>
-
-        {% if words.has_next %}
-            <a href="?page={{ words.next_page_number }}">Next</a>
-        {% endif %}
-    </span>
-</div>
-</div>
 </body>
 </html>

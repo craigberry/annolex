@@ -62,7 +62,15 @@ class CorrectionForm(ModelForm):
         self.fields['spelling_to'].widget.attrs["size"] = 15
         self.fields['lemma_to'].widget.attrs["size"] = 15
         self.fields['pos_to'].widget.attrs["size"] = 10
+        self.fields['annotation'].widget.attrs["cols"] = 30
+        self.fields['annotation'].widget.attrs["rows"] = 8
          
     class Meta:
         model = Correction
-        exclude = ('corrected_by')
+        exclude = ('corrected_by',)
+        
+class SearchForm(forms.Form):
+    spelling   = forms.CharField(max_length=45, required=False)
+    lemma      = forms.CharField(max_length=45, required=False)
+    pos        = forms.CharField(max_length=10, required=False)
+    wordid     = forms.CharField(max_length=45, required=False)
