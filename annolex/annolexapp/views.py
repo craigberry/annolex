@@ -14,11 +14,20 @@ def annolex(request):
 
     searchform = SearchForm(request.session.get('searchform'))
     editform = CorrectionForm(request.session.get('editform'))
-    
-    spelling_search = request.session.get('spelling_search')
-    lemma_search = request.session.get('lemma_search')
-    pos_search = request.session.get('pos_search')
-    wordid_search = request.session.get('wordid_search')
+
+    annolex_session = request.session.get('annolex_session')
+    if annolex_session:
+        spelling_search = annolex_session['spelling_search']
+        lemma_search = annolex_session['lemma_search']
+        pos_search = annolex_session['pos_search']
+        wordid_search = annolex_session['wordid_search']
+        opchoice = annolex_session['opchoice']
+    else:
+        spelling_search = None
+        lemma_search = None
+        pos_search = None
+        wordid_search = None
+        opchoice = None
 
      
     if request.method == 'POST':
@@ -58,6 +67,7 @@ def annolex(request):
             lemma_search = request.POST.__getitem__('lemma')
             pos_search = request.POST.__getitem__('pos')
             wordid_search = request.POST.__getitem__('wordid')
+            opchoice = request.POST.__getitem__('opchoice')
 
             page = 1
 
@@ -82,7 +92,10 @@ def annolex(request):
         qobj.append (Q(wordid__iregex=wordid_search))
 
     if qobj:
-        word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj))
+        if opchoice and opchoice == '1':
+            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj))
+        else:
+            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj))
     else:
         word_list = AnnoLex.objects.all()
 
@@ -97,10 +110,12 @@ def annolex(request):
     else:
         words = None
 
-    request.session['spelling_search'] = spelling_search
-    request.session['lemma_search']    = lemma_search
-    request.session['pos_search']             = pos_search
-    request.session['wordid_search']          = wordid_search
+
+    request.session['annolex_session'] = { 'spelling_search': spelling_search,
+                                           'lemma_search':    lemma_search,
+                                           'pos_search':      pos_search,
+                                           'wordid_search':   wordid_search,
+                                           'opchoice':        opchoice }
 
 
 

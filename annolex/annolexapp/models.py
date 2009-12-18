@@ -69,8 +69,13 @@ class CorrectionForm(ModelForm):
         model = Correction
         exclude = ('corrected_by',)
         
+OPERATOR_CHOICES = (
+    (1, 'And'),
+    (2, 'Or'),
+)
 class SearchForm(forms.Form):
     spelling   = forms.CharField(max_length=45, required=False)
     lemma      = forms.CharField(max_length=45, required=False)
     pos        = forms.CharField(max_length=10, required=False)
     wordid     = forms.CharField(max_length=45, required=False)
+    opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False)
