@@ -1,0 +1,28 @@
+{% extends "start.html" %}
+{% block title %}{{ object }}{% endblock %}
+{% block content %}
+<div id="main">
+<h2>{{ object }}</h2>
+<table>
+    <col align="right"/>
+    <col />
+    <tr><td>Operation:</td><td> {{ object.get_operation_display }}</td></tr>
+    <tr><td>Spelling From:</td><td>{{ object.spelling_from }}</td></tr>
+    <tr><td>Spelling To:</td><td>{{ object.spelling_to }}</td></tr>
+    <tr><td>Lemma From:</td><td>{{ object.lemma_from }}</td></tr>
+    <tr><td>Lemma To:</td><td>{{ object.lemma_to }}</td></tr>
+    <tr><td>POS From:</td><td>{{ object.pos_from }}</td></tr>
+    <tr><td>POS To:</td><td>{{ object.pos_to }}</td></tr>
+    <tr><td>Word ID From:</td><td>{{ object.wordid_from }}</td></tr>
+    <tr><td>Word ID To:</td><td>{{ object.wordid_to }}</td></tr>
+    <tr><td>Corrected By:</td><td>{{ object.corrected_by }}</td></tr>
+    <tr><td>Corrected Date:</td><td>{{ object.corrected_date }}</td></tr>
+    <tr><td>Approved By:</td><td>{{ object.approved_by }}</td></tr>
+    <tr><td>Approved Date:</td><td>{{ object.approved_date }}</td></tr>
+    <tr><td>Applied By:</td><td>{{ object.applied_by }}</td></tr>
+    <tr><td>Applied Date:</td><td>{{ object.applied_date }}</td></tr>
+    <tr><td>Annotation:</td><td>{{ object.annotation }}</td></tr>
+</table>
+</div> <!-- main -->
+{% endblock %}
+

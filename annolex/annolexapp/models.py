@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 from django import forms
+from django.db.models import permalink
 
 class AnnoLex(models.Model):
     KwicL        = models.CharField(max_length=128)
@@ -44,7 +45,30 @@ class Correction(models.Model):
     applied_date    = models.DateTimeField(blank=True, null=True)
     annotation      = models.TextField(blank=True, null=True)
 
-admin.site.register(Correction)
+    class Meta:
+        ordering = ('-corrected_date',)
+        
+    def __unicode__(self):
+        return  "%s %s: %s (%s, %s) to %s (%s, %s)" %  (
+                    self.wordid_from or "#%s" % self.id, 
+                    self.get_operation_display(),
+                    self.spelling_from, 
+                    self.lemma_from, 
+                    self.pos_from, 
+                    self.spelling_to or self.spelling_from, 
+                    self.lemma_to or self.lemma_from, 
+                    self.pos_to or self.pos_from)
+        
+    @permalink
+    def get_absolute_url(self):
+        return('django.views.generic.list_detail.object_detail', None, {'object_id': self.id})
+    
+class CorrectionAdmin(admin.ModelAdmin):
+    list_dislay = ('__unicode__', 'wordid_from', 'operation', 'spelling_from', 'spelling_to', 
+                   'lemma_from', 'lemma_to', 'pos_from', 'pos_to')
+    list_filter = ('corrected_by', 'corrected_date')
+
+admin.site.register(Correction, CorrectionAdmin)
 
 class CorrectionForm(ModelForm):
 
@@ -68,7 +92,10 @@ class CorrectionForm(ModelForm):
     class Meta:
         model = Correction
         exclude = ('corrected_by',)
-        
+
+
+# Now do the search form.
+
 OPERATOR_CHOICES = (
     (1, 'And'),
     (2, 'Or'),
@@ -76,6 +103,6 @@ OPERATOR_CHOICES = (
 class SearchForm(forms.Form):
     spelling   = forms.CharField(max_length=45, required=False)
     lemma      = forms.CharField(max_length=45, required=False)
-    pos        = forms.CharField(max_length=10, required=False)
-    wordid     = forms.CharField(max_length=45, required=False)
-    opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False)
+    pos        = forms.CharField(max_length=10, required=False, label='POS')
+    wordid     = forms.CharField(max_length=45, required=False, label='Word ID')
+    opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine With')

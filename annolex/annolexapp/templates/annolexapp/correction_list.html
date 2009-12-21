@@ -1,0 +1,28 @@
+{% extends "start.html" %}
+{% block content %}
+<div id="main">
+<h2>Review Corrections</h2>
+<ul>
+  {% for object in object_list %}
+  <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+  {% endfor %}
+</ul>
+</div> <!-- main -->
+<div id="pagination" class="pagination" align="right">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">First</a> &middot;
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a> &middot;
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            &middot; <a href="?page={{ page_obj.next_page_number }}">Next</a>
+            &middot;<a href="?page=last">Last</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
