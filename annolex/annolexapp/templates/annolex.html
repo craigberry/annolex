@@ -72,6 +72,7 @@
   </div> <!-- editbox -->
   </div>
   <div id="wordlist">
+    {% if words %}
     <table class="wordlist">
       <col />
       <col />
@@ -115,9 +116,18 @@
       {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <table width = "50%">
+    <tr><td>Welcome to AnnoLex, an application for the correction and annotation of lexical data in Early 
+Modern texts.  Enter your search criteria in the form at the upper left to obtain a list of uncorrected
+spelling, lemma, and part-of-speech identifications in context.
+</td></tr>
+    </table>
+    {% endif %}
   </div> <!-- wordlist -->
 </div> <!-- main -->
 <div id="pagination" class="pagination" align="right">
+    {% if words %}
     <span class="step-links">
         {% if words.has_previous %}
             <a href="?page=1">First</a> &middot;
@@ -133,6 +143,7 @@
             &middot;<a href="?page=last">Last</a>
         {% endif %}
     </span>
+    {% endif %}
 </div>
 
 {% endblock %}

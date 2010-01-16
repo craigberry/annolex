@@ -93,11 +93,11 @@ def annolex(request):
 
     if qobj:
         if opchoice and opchoice == '1':
-            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj))
+            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj))[:10000]
         else:
-            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj))
-    else:
-        word_list = AnnoLex.objects.all()
+            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj))[:10000]
+#    else:
+#        word_list = AnnoLex.objects.all()[:10000]
 
 
     if word_list:
