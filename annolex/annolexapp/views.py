@@ -83,13 +83,13 @@ def annolex(request):
 
     qobj = []
     if spelling_search:
-        qobj.append (Q(spelling__iregex=spelling_search))
+        qobj.append (Q(spelling__istartswith=spelling_search))
     if lemma_search:
-        qobj.append (Q(lemma__iregex=lemma_search))
+        qobj.append (Q(lemma__istartswith=lemma_search))
     if pos_search:
-        qobj.append (Q(pos__iregex=pos_search))
+        qobj.append (Q(pos__istartswith=pos_search))
     if wordid_search:
-        qobj.append (Q(wordid__iregex=wordid_search))
+        qobj.append (Q(wordid__istartswith=wordid_search))
 
     if qobj:
         if opchoice and opchoice == '1':
