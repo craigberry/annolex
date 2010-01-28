@@ -1,0 +1,143 @@
+{% extends "start.html" %}
+{% block content %}
+<div id="main">
+<table  width="600">
+<tr><td>
+        <h2>What is Annolex?</h2>
+        <p>Annolex is a prototype of a collaborative data curation tool
+for lemmatized and morphosyntactically annotated textual data. It uses
+the Django framework, which is written in Python, and it stores its data
+in MySQL. Annolex is being developed by Craig Berry and Martin Mueller
+under a grant from Academic Research Technologies at Northwestern
+University.</p>
+        <p>The data currently contained in Annolex consist of n 283
+Early Modern English plays (~ six million words) by authors other than
+Shakespeare. The source files are SGML encoded texts transcribed by the
+Text Creation Partnership from the microfilm images of Early English
+Books Online. As part of the MONK project, these files were transformed
+into TEI-P5 XML files through procedures designed and implemented
+Stephen Ramsay, and Brian Pytlik Zillig. and tokenized, lemmatized, and
+morphosyntactically annotated with Morphadorner, a Natural Language
+Processing Toolkit written by Phil Burns.  </p>
+        <p>The transcriptions from microfilm images contain many errors
+and omissions. Machine-gneerated tokenization, lemmatization, and
+morphosyntactic annotation also adds errors. Many  of these errors can
+be corrected with high degrees of confidence and do not require
+consultation  of the source files. Some of them do.  Annolex is designed
+to support such corrections as the work of many hands at different times
+and in different places. The current project does not include a page
+viewer of the source text, but the underlying support it, and there are
+no technical difficulties in the implementation of such a feature. </p>
+        <h2>What can you do with Annolex in principle?</h2>
+        <p>The potential of Annolex is best seen by looking at its
+'verticalized' representation of the underlying text. Every word
+occurrence or token in the text is a  data row, consisting of: </p>
+       <ol>
+           <li>a unique ID for the word token</li>
+           <li>the spelling of the token</li>
+           <li>the 35 characters before the token</li>
+           <li>the 35 characters following the token</li>
+           <li>the lemma assigned to the token</li>
+           <li>the POS tag assigned to the token</li>
+       </ol>
+        <p>Users can select token ranges by spelling, POS tag, lemma,
+author, work, or date, and sort return lists by those criteria. Because
+errors for the most part are not randomly distributed, it is possible to
+design 'error forcing' routines or searches that retrieve lists in which
+certain kinds of error are expected to cluster.  </p>
+        <h2>How do you correct an error?</h2>
+        <p>In order to correct an error, you must have a user account
+and log in to Annolex. A correction does not overwrite the current text.
+In a special text box you suggest a correction for the spelling, lemma,
+or POS tag of a word. The suggestion is entered as a user transaction
+into a data row in a correction table that records:  </p>
+        <ol>
+            <li>the user id</li>
+            <li>a time stamp for the transaction</li>
+            <li>the token id associated with the correction</li>
+            <li>the spelling, lemma or POS tag that is suggested as the correction</li>
+        </ol>
+        <p>User suggestions are subject to editorial review. The Django
+framework has a very robust and thoughtful system for user management.
+It will be a straightforward matter to create a user hierarchy and give
+some users privileges for reviewing and approving corrections.  </p>
+        <p>Notice that once there is a substantial error list, its
+analysis will provide very useful guidance to identifying likely errors
+elsewhere.</p>
+        <h2>What can you do in Annolex right now?</h2>
+        <p>Right now (23 January 2010), only a few of the search and
+sort functionalities have been implemented, but testing suggests that
+the system is robust and fast for the size of its current data and
+probably considerably larger data sets as well. It will not take much
+time to add most of the esential features. On the other hand, Annolex is
+not anybody's day job, and progress depends on the crises that do not
+happen during the developer's day job. </p>
+        <p>Right now, you can only search for words that 'start with'
+one or more letters. Searches of the 'contains' and 'ends with' kind are
+next on the list. </p>
+        <p>Right now, information about the author, title, date, or
+genre of a work is hidden in the work prefix of the token id, which is
+derived from the file name of the SGML source file, e.g. A07004. On the
+other hand, the system "knows" that A07004 is Marlowe's
+<i>Tamburlaine</i> as published in 1590.</p>
+        <p>Right now, a search will retrieve all its hits in a default
+order, but flexible 'sort' features are high on the priority list.</p>
+        <p>As soon as these three features are implemented, Annolex will
+be a plain vanilla but very efficient tool for distributed data
+curation.  </p>
+        <h2>What errors are most worth fixing?</h2>
+        <p>The most irritating and the most easily fixed errors in the
+texts result from incomplete transcriptions -- letters or words that the
+transcribers could not identify in the page images and marked as such.
+In the six million words of the 283 plays (not counting a million
+punctuation marks), there are are at least 60,000 errors of that kind.
+One in a hundred words has something wrong with it. In the 35,000 words
+of the two parts of Tamburlaine almost 1,000 words (~3%) are
+incompletely transcribed or omitted altogether. According to the <i>New
+York Times</i> (17 November 2009), Google Earth has taken to using
+volunteers to correct their maps. John Kittle, an engineer from Decatur
+Georgia, helped correct the Google map for his home town and said:</p>
+        <blockquote>Seeing an error on a map is the kind of thing that
+gnaws at me. By being able to fix it, I feel like the world is a better
+place in a very small but measurable way. </blockquote>
+        <p>That is not only nice way of expressing the ethos of
+collaborative data curation, but it also suggests that instances of this
+ethos occur with sufficient frequency to make it worthwhile to develop
+frameworks that facilitate its exercise. </p>
+        <p>Spellings and abbreviations of names in Early Modern drama
+are very inconsistent, especially in speech prefixes. Mapping this
+variance to standardized forms of names at the lemma level greatly
+increases the query potential of plays. </p>
+        <p>How many different words are used in Early Modern Drama and
+with what frequency? You can answer that question quite precisely for
+Shakespeare, who uses ~ 18,000 distinct lemmata, including proper names.
+The machine will tell you that there are ~65,000 distinct lemmata in the
+283 plays, but at least 20,000 of them are bogus lemmata that result
+from incompletely transcribed words and minor variants in the spelling
+of names and abbreviations. It would clearly be helpful for some
+inquiries to have more precise data about the lexicon of Early Modern
+drama.  This is an area where users can help.</p>
+        <p>Errors of tokenization create special problems. It is certain
+that the string "Christian nus creants" is meant to represent "Christian
+miscreants." It is equally clear that "withothers" should be tokenized
+as "with others," although you need to go to the original to determine
+whether the error was the typesetter's or the transcriber's. Annolex
+allows users to make suggestions for splitting or joining tokens. It is
+agnostic about the question whether typographical errors of this kind
+should be tacitly corrected in the transcription or explicitly marked. 
+</p>
+        <p>The manual correction of part-of-speech tags is probably an
+acquired taste.  Corpus linguists live with error rates on the order of
+3% and find that errors of that magnitude do not invalidate
+quantitatively based analyses. There are, however, some coarse errors
+that are worth checking for in a given work. Do all the noun or proper
+name tags represent nouns or proper names? Select the list of words in a
+play that are not classified as nouns, adjective, or verbs and look for
+cases where a word clearly belongs in one of those classes. A handful of
+such routines -- to be developed in a more elaborate tutorial -- are
+likely to catch the coarsest and most consequential errors.  </p>
+</td>
+</tr>
+</table>
+</div>
+{% endblock %}
