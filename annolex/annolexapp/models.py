@@ -97,7 +97,7 @@ class CorrectionForm(ModelForm):
 class TextList(models.Model):
     textid     = models.CharField(max_length=10, primary_key=True)
     author     = models.CharField(max_length=25)
-    title      = models.CharField(max_length=60)
+    title      = models.CharField(max_length=80)
 
     def __unicode__(self):
         return  "%s: %s" %  (self.author, self.title[0:25])
