@@ -7,10 +7,10 @@ from django.db.models import permalink
 
 class AnnoLex(models.Model):
     KwicL        = models.CharField(max_length=128)
-    spelling     = models.CharField(max_length=40)
+    spelling     = models.CharField(max_length=40, db_index=True)
     KwicR        = models.CharField(max_length=128)
-    lemma        = models.CharField(max_length=40)
-    pos          = models.CharField(max_length=10)
+    lemma        = models.CharField(max_length=40, db_index=True)
+    pos          = models.CharField(max_length=10, db_index=True)
     spellcolfreq = models.IntegerField()
     wordid       = models.CharField(max_length=45,primary_key=True)
 
@@ -94,6 +94,15 @@ class CorrectionForm(ModelForm):
         exclude = ('corrected_by',)
 
 
+class TextList(models.Model):
+    textid     = models.CharField(max_length=10, primary_key=True)
+    author     = models.CharField(max_length=25)
+    title      = models.CharField(max_length=60)
+
+    def __unicode__(self):
+        return  "%s: %s" %  (self.author, self.title[0:25])
+
+
 # Now do the search form.
 
 OPERATOR_CHOICES = (
@@ -101,6 +110,7 @@ OPERATOR_CHOICES = (
     (2, 'Or'),
 )
 class SearchForm(forms.Form):
+    textid     = forms.ModelChoiceField(queryset=TextList.objects, required=False, label='Text', empty_label='(All)')
     spelling   = forms.CharField(max_length=45, required=False)
     lemma      = forms.CharField(max_length=45, required=False)
     pos        = forms.CharField(max_length=10, required=False, label='POS')

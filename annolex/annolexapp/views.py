@@ -17,12 +17,14 @@ def annolex(request):
 
     annolex_session = request.session.get('annolex_session')
     if annolex_session:
+        text_search = annolex_session['text_search']
         spelling_search = annolex_session['spelling_search']
         lemma_search = annolex_session['lemma_search']
         pos_search = annolex_session['pos_search']
         wordid_search = annolex_session['wordid_search']
         opchoice = annolex_session['opchoice']
     else:
+        text_search = None
         spelling_search = None
         lemma_search = None
         pos_search = None
@@ -63,6 +65,7 @@ def annolex(request):
             searchform = SearchForm(request.POST)
             request.session['searchform'] = request.POST
                 
+            text_search = request.POST.__getitem__('textid')
             spelling_search = request.POST.__getitem__('spelling')
             lemma_search = request.POST.__getitem__('lemma')
             pos_search = request.POST.__getitem__('pos')
@@ -88,6 +91,11 @@ def annolex(request):
         qobj.append (Q(lemma__istartswith=lemma_search))
     if pos_search:
         qobj.append (Q(pos__istartswith=pos_search))
+        
+# Yes, wordid.  Because the wordid starts with the text ID, this should work.
+
+    if text_search:
+        qobj.append (Q(wordid__istartswith=text_search))
     if wordid_search:
         qobj.append (Q(wordid__istartswith=wordid_search))
 
@@ -111,7 +119,8 @@ def annolex(request):
         words = None
 
 
-    request.session['annolex_session'] = { 'spelling_search': spelling_search,
+    request.session['annolex_session'] = { 'text_search':     text_search,
+                                           'spelling_search': spelling_search,
                                            'lemma_search':    lemma_search,
                                            'pos_search':      pos_search,
                                            'wordid_search':   wordid_search,
