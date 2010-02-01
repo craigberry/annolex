@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+    DocumentRoot /usr/local/django/projects/annolex
+    ServerName annolex.at.northwestern.edu
+
+    Alias /media/ /usr/local/django/projects/annolex/media/
+
+    <Directory /usr/local/django/projects/annolex/media>
+        Order deny,allow
+        Allow from all
+    </Directory>
+    
+    WSGIScriptAlias / /usr/local/django/projects/annolex/apache/django.wsgi
+
+    <Directory /usr/local/django/projects/annolex/apache>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+</VirtualHost>
