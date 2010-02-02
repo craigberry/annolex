@@ -23,6 +23,7 @@ def annolex(request):
         pos_search = annolex_session['pos_search']
         wordid_search = annolex_session['wordid_search']
         opchoice = annolex_session['opchoice']
+        sortchoice = annolex_session['sortchoice']
     else:
         text_search = None
         spelling_search = None
@@ -30,6 +31,7 @@ def annolex(request):
         pos_search = None
         wordid_search = None
         opchoice = None
+        sortchoice = None
 
      
     if request.method == 'POST':
@@ -71,6 +73,7 @@ def annolex(request):
             pos_search = request.POST.__getitem__('pos')
             wordid_search = request.POST.__getitem__('wordid')
             opchoice = request.POST.__getitem__('opchoice')
+            sortchoice = request.POST.__getitem__('sortchoice')
 
             page = 1
 
@@ -98,14 +101,21 @@ def annolex(request):
         qobj.append (Q(wordid__istartswith=text_search))
     if wordid_search:
         qobj.append (Q(wordid__istartswith=wordid_search))
+        
 
     if qobj:
+        order_by_list= ('wordid',)
+        if sortchoice == '2':
+            order_by_list = ('lemma' , 'pos', 'spelling')
+        elif sortchoice == '3':
+            order_by_list = ('spelling', 'lemma', 'pos')
+        elif sortchoice == '4':
+            order_by_list = ('pos', 'lemma', 'spelling')
+        
         if opchoice and opchoice == '1':
-            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj))[:10000]
+            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj)).order_by(*order_by_list)[:10000]
         else:
-            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj))[:10000]
-#    else:
-#        word_list = AnnoLex.objects.all()[:10000]
+            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj)).order_by(*order_by_list)[:10000]
 
 
     if word_list:
@@ -124,7 +134,8 @@ def annolex(request):
                                            'lemma_search':    lemma_search,
                                            'pos_search':      pos_search,
                                            'wordid_search':   wordid_search,
-                                           'opchoice':        opchoice }
+                                           'opchoice':        opchoice,
+                                           'sortchoice':      sortchoice }
 
 
 

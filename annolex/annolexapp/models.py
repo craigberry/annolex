@@ -109,6 +109,14 @@ OPERATOR_CHOICES = (
     (1, 'And'),
     (2, 'Or'),
 )
+
+SEARCH_SORT_CHOICES = (
+    (1, 'Word ID'),
+    (2, 'Lemma, POS, Spelling'),
+    (3, 'Spelling, Lemma, POS'),
+    (4, 'POS, Lemma, Spelling'),
+)
+
 class SearchForm(forms.Form):
     textid     = forms.ModelChoiceField(queryset=TextList.objects, required=False, label='Text', empty_label='(All)')
     spelling   = forms.CharField(max_length=45, required=False)
@@ -116,3 +124,4 @@ class SearchForm(forms.Form):
     pos        = forms.CharField(max_length=10, required=False, label='POS')
     wordid     = forms.CharField(max_length=45, required=False, label='Word ID')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine With')
+    sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort by')
