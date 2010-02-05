@@ -100,7 +100,15 @@ class TextList(models.Model):
     title      = models.CharField(max_length=80)
 
     def __unicode__(self):
-        return  "%s: %s" %  (self.author, self.title[0:25])
+        author = self.author
+        if author.find(',') > 0:
+            author = author[:(self.author.find(',') + 3)] + '.'
+        
+        title_string = "%s: %s" % (author, self.title)
+        if len(title_string) > 32:
+            return "%s..." % title_string[0:30]
+        else:
+            return title_string
 
 
 # Now do the search form.
