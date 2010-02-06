@@ -22,6 +22,7 @@ def annolex(request):
         lemma_search = annolex_session['lemma_search']
         pos_search = annolex_session['pos_search']
         wordid_search = annolex_session['wordid_search']
+        matchchoice = annolex_session['matchchoice']
         opchoice = annolex_session['opchoice']
         sortchoice = annolex_session['sortchoice']
     else:
@@ -30,6 +31,7 @@ def annolex(request):
         lemma_search = None
         pos_search = None
         wordid_search = None
+        matchchoice = None
         opchoice = None
         sortchoice = None
 
@@ -72,6 +74,7 @@ def annolex(request):
             lemma_search = request.POST.__getitem__('lemma')
             pos_search = request.POST.__getitem__('pos')
             wordid_search = request.POST.__getitem__('wordid')
+            matchchoice = request.POST.__getitem__('matchchoice')
             opchoice = request.POST.__getitem__('opchoice')
             sortchoice = request.POST.__getitem__('sortchoice')
 
@@ -88,20 +91,26 @@ def annolex(request):
                 page = 1
 
     qobj = []
-    if spelling_search:
-        qobj.append (Q(spelling__istartswith=spelling_search))
-    if lemma_search:
-        qobj.append (Q(lemma__istartswith=lemma_search))
-    if pos_search:
-        qobj.append (Q(pos__istartswith=pos_search))
-        
-# Yes, wordid.  Because the wordid starts with the text ID, this should work.
-
+    if matchchoice and matchchoice == '2':
+        if spelling_search:
+            qobj.append (Q(spelling__icontains=spelling_search))
+        if lemma_search:
+            qobj.append (Q(lemma__icontains=lemma_search))
+        if pos_search:
+            qobj.append (Q(pos__icontains=pos_search))
+    else:
+        if spelling_search:
+            qobj.append (Q(spelling__istartswith=spelling_search))
+        if lemma_search:
+            qobj.append (Q(lemma__istartswith=lemma_search))
+        if pos_search:
+            qobj.append (Q(pos__istartswith=pos_search))
+            
+     # Yes, wordid.  Because the wordid starts with the text ID, this should work.
     if text_search:
         qobj.append (Q(wordid__istartswith=text_search))
     if wordid_search:
         qobj.append (Q(wordid__istartswith=wordid_search))
-        
 
     if qobj:
         order_by_list= ('wordid',)
@@ -134,6 +143,7 @@ def annolex(request):
                                            'lemma_search':    lemma_search,
                                            'pos_search':      pos_search,
                                            'wordid_search':   wordid_search,
+                                           'matchchoice':     matchchoice,
                                            'opchoice':        opchoice,
                                            'sortchoice':      sortchoice }
 

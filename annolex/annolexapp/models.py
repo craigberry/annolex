@@ -114,8 +114,8 @@ class TextList(models.Model):
 # Now do the search form.
 
 OPERATOR_CHOICES = (
-    (1, 'And'),
-    (2, 'Or'),
+    (1, 'and'),
+    (2, 'or'),
 )
 
 SEARCH_SORT_CHOICES = (
@@ -125,11 +125,17 @@ SEARCH_SORT_CHOICES = (
     (4, 'POS, Lemma, Spelling'),
 )
 
+SEARCH_MATCH_CHOICES = (
+    (1, 'starting with'),
+    (2, 'containing'),
+)
+
 class SearchForm(forms.Form):
     textid     = forms.ModelChoiceField(queryset=TextList.objects, required=False, label='Text', empty_label='(All)')
     spelling   = forms.CharField(max_length=45, required=False)
     lemma      = forms.CharField(max_length=45, required=False)
     pos        = forms.CharField(max_length=10, required=False, label='POS')
     wordid     = forms.CharField(max_length=45, required=False, label='Word ID')
-    opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine With')
-    sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort by')
+    matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
+    opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')
+    sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort')
