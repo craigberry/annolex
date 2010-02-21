@@ -139,3 +139,21 @@ class SearchForm(forms.Form):
     matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')
     sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort')
+
+
+FILTER_APPROVED_CHOICES = (
+    (1, 'Unapproved'),
+    (2, 'Approved'),
+)
+
+FILTER_APPLIED_CHOICES = (
+    (1, 'Unapplied'),
+    (2, 'Applied'),
+)
+
+
+class ReviewChoicesForm(forms.Form):
+    filterwho      = forms.ModelChoiceField(queryset=User.objects, required=False, label='Corrector', empty_label='(All)')
+    filterapproved = forms.ChoiceField(choices=FILTER_APPROVED_CHOICES, initial=1, required=True, label='Approved')
+    filterapplied  = forms.ChoiceField(choices=FILTER_APPLIED_CHOICES, initial=1, required=True, label='Applied')
+

@@ -1,0 +1,93 @@
+{% extends "start.html" %}
+{% block content %}
+<div id="main">
+  <div id="rightbar">
+  <div id="reviewchoices">
+     <h3><center>Filter Corrections</center></h3>
+    <table>
+    <form action="" method="POST">
+    {{ reviewchoicesform.as_table }}
+    <tr><td/><td><input type="submit" name="which_post" value="Filter" id="submit"></td></tr>
+        <div id="reviewchoices_errors" style="color: red;">
+            {% if reviewchoicesform.errors %}
+            <p>
+                Please correct the error{{ reviewchoicesform.errors|pluralize }} below.
+            </p>
+            <ul>
+            {% for field in reviewchoicesform %}
+              {% if field.errors %}
+                <li>{{ field.label }} <strong>{{ field.errors }}</strong></li>
+               {% endif %}
+            {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+    </form>
+    </table>
+  </div>
+  </div>
+  <div id="corrections">
+    {% if corrections %}
+    <table class="wordlist">
+      <thead>
+        <tr>
+        <th>Correction</th>
+        <th>Corrector / Date</th>
+        <th>Approver / Date</th>
+        <th>Applier / Date</th>
+        {% if user.is_authenticated and user.is_superuser %}
+            <th>Action</th>
+        {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+      {% for correction in corrections.object_list %}
+        <tr>
+          <td>{{ correction }}<br> {{ correction.annotation }}</td>
+          <td>{{ correction.corrected_by }} / {{ correction.corrected_date }}</td>
+          <td>{{ correction.approved_by }} / {{ correction.approved_date }}</td>
+          <td>{{ correction.applied_by }} / {{ correction.applied_date }}</td>
+
+          {% if user.is_authenticated and user.is_superuser %}
+
+          <td>
+            <form action="" method="post">
+              <input type="hidden" name="id" value="{{ correction.id }}" />
+              <input type="submit" name="which_post" value="Approve" />
+            </form>
+          </td>
+          
+          {% endif %}
+        </tr>
+    
+      {% endfor %}
+
+      </tbody>
+    </table>
+    {% else %}
+    <table width = "50%">
+    <tr><td>There are currently no corrections to review.</td></tr>
+    </table>
+    {% endif %}
+  </div> <!-- wordlist -->
+
+
+</div> <!-- main -->
+<div id="pagination" class="pagination" align="right">
+    <span class="step-links">
+        {% if corrections.has_previous %}
+            <a href="?page=1">First</a> &middot;
+            <a href="?page={{ corrections.previous_page_number }}">Previous</a> &middot;
+        {% endif %}
+
+        <span class="current">
+            Page {{ corrections.number }} of {{ corrections.paginator.num_pages }}
+        </span>
+
+        {% if corrections.has_next %}
+            &middot; <a href="?page={{ corrections.next_page_number }}">Next</a>
+            &middot;<a href="?page=last">Last</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

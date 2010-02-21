@@ -10,7 +10,7 @@
         <div id="searchform_errors" style="color: red;">
             {% if searchform.errors %}
             <p>
-                Please correct the error{{ editform.errors|pluralize }} below.
+                Please correct the error{{ searchform.errors|pluralize }} below.
             </p>
             <ul>
             {% for field in searchform %}
