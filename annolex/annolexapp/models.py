@@ -35,7 +35,7 @@ class Correction(models.Model):
     lemma_to        = models.CharField(max_length=45, blank=True, null=True)
     pos_from        = models.CharField(max_length=10)
     pos_to          = models.CharField(max_length=10, blank=True, null=True)
-    wordid_from     = models.CharField(max_length=45)
+    wordid_from     = models.ForeignKey(AnnoLex, related_name='wordid_from')
     wordid_to       = models.CharField(max_length=45, blank=True, null=True)
     corrected_by    = models.ForeignKey(User, related_name='corrected_by')
     corrected_date  = models.DateTimeField(auto_now_add=True)

@@ -32,9 +32,9 @@
       <thead>
         <tr>
         <th>Correction</th>
-        <th>Corrector / Date</th>
-        <th>Approver / Date</th>
-        <th>Applier / Date</th>
+        <th>Corrector</th>
+        <th>Approver</th>
+        <th>Applier</th>
         {% if user.is_authenticated and user.is_superuser %}
             <th>Action</th>
         {% endif %}
@@ -43,10 +43,35 @@
       <tbody>
       {% for correction in corrections.object_list %}
         <tr>
-          <td>{{ correction }}<br> {{ correction.annotation }}</td>
-          <td>{{ correction.corrected_by }} / {{ correction.corrected_date }}</td>
-          <td>{{ correction.approved_by }} / {{ correction.approved_date }}</td>
-          <td>{{ correction.applied_by }} / {{ correction.applied_date }}</td>
+          <td>
+              {{ correction.get_operation_display }} {{ correction.wordid_from.wordid }}:
+              {{ correction.wordid_from.KwicL }} 
+              <br>
+              {% ifnotequal correction.operation 2 %}<del>{% endifnotequal %}
+              {{ correction.spelling_from }} ({{ correction.lemma_from }}, 
+              {{ correction.pos_from }}){% ifnotequal correction.operation 2 %}</del>{% endifnotequal %}
+              {% ifnotequal correction.operation 3 %}
+              {% if correction.spelling_to %} 
+                 <b>{{ correction.spelling_to }}</b> 
+              {% else %}
+                 {{ correction.spelling_from }} 
+              {% endif %}
+              {% if correction.lemma_to %}
+                 (<b>{{ correction.lemma_to }}</b> 
+              {% else %}
+                 ({{ correction.lemma_from }}
+              {% endif %},
+              {%if correction.pos_to %}
+                 <b>{{ correction.pos_to }}</b>) 
+              {% else %}
+                 {{ correction.pos_from }})
+              {% endif %}
+              {% endifnotequal %}
+              {{ correction.wordid_from.KwicR }}
+              <br> {{ correction.annotation }}</td>
+          <td>{{ correction.corrected_by }} <br> {{ correction.corrected_date }}</td>
+          <td>{{ correction.approved_by }} <br> {{ correction.approved_date }}</td>
+          <td>{{ correction.applied_by }} <br> {{ correction.applied_date }}</td>
 
           {% if user.is_authenticated and user.is_superuser %}
 
