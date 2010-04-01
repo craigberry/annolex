@@ -2,6 +2,9 @@
     DocumentRoot /usr/local/django/projects/annolex
     ServerName annolex.at.northwestern.edu
 
+    Alias /robots.txt /usr/local/django/projects/annolex/media/robots.txt
+    Alias /favicon.ico /usr/local/django/projects/annolex/media/favicon.ico
+
     Alias /media/ /usr/local/django/projects/annolex/media/
 
     <Directory /usr/local/django/projects/annolex/media>
