@@ -10,7 +10,7 @@ from annolex.annolexapp.models import Correction
 urlpatterns = patterns('',
     url(r'^$', annolex),
     url(r'^accounts/login/$',  login),
-    url(r'^accounts/logout/$', logout, {'next_page': '/annolex/'}),
+    url(r'^accounts/logout/$', logout, {'next_page': '/'}),
     url(r'^review/$', review),
     url(r'^about/$', direct_to_template, {'template': 'about.html'}),
 )

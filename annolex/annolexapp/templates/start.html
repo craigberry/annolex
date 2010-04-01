@@ -102,14 +102,14 @@
 
 <body>
   <div id ="topbar">
-     <a href="/annolex/"> Correct </a> &middot; 
-     <a href="/annolex/review/"> Review </a> &middot; 
-     <a href="/annolex/about/"> About </a> &middot; 
+     <a href="/"> Correct </a> &middot; 
+     <a href="/review/"> Review </a> &middot; 
+     <a href="/about/"> About </a> &middot; 
      {% if user.is_authenticated %}
-     <a href="/annolex/accounts/logout"> Log out {{ user.username }} </a>
+     <a href="/accounts/logout/"> Log out {{ user.username }} </a>
      
      {% else %}
-     <a href="/annolex/accounts/login/?next=/annolex/"> Login </a>
+     <a href="/accounts/login/?next=/"> Login </a>
     {% endif %}
   </div
 
