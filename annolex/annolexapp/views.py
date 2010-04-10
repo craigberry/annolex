@@ -123,9 +123,9 @@ def annolex(request):
             order_by_list = ('pos', 'lemma', 'spelling')
         
         if opchoice and opchoice == '1':
-            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj)).order_by(*order_by_list)[:10000]
+            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj)).order_by(*order_by_list)[:2500]
         else:
-            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj)).order_by(*order_by_list)[:10000]
+            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj)).order_by(*order_by_list)[:2500]
 
 
     if word_list:
@@ -226,9 +226,9 @@ def review(request):
             qobj.append (Q(applied_date__isnull=True))
 
     if qobj:
-        correction_list = Correction.objects.filter(reduce(operator.and_, qobj)).order_by('-corrected_date')[:10000]
+        correction_list = Correction.objects.filter(reduce(operator.and_, qobj)).order_by('-corrected_date')[:2500]
     else:
-        correction_list = Correction.objects.order_by('-corrected_date')[:10000]
+        correction_list = Correction.objects.order_by('-corrected_date')[:2500]
 
 
     if correction_list:
