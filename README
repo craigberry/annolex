@@ -1,0 +1,52 @@
+AnnoLex is a collaborative data curation tool for lemmatized and
+morphosyntactically tagged textual data. It is built using the Django
+framework and it stores its data in a MySQL database.
+
+Copyright (c) 2010 Craig A. Berry
+
+Released under the Artistic License 2.0:
+   http://www.perlfoundation.org/attachment/legal/artistic-2_0.txt
+
+Prerequisites:
+
+The Django framework 1.0 or later    http://www.djangoproject.org/
+A MySQL database server              http://www.mysql.com/
+MySQLdb Python interface to MySQL    http://mysql-python.sourceforge.net/
+Apache web server                    http://www.apache.org/
+WSGI web gateway interface           http://wsgi.org/wsgi/
+
+In principle, almost any of these components except Django itself could
+be swapped out without radical changes to the application.
+
+Use:
+
+The project is currently a bare bones prototype.  There is no
+programmer-oriented documentation and no user documentation except
+the About page.  There are no build procedures, Makefiles,  or 
+installers.  The basic steps to follow to run the application are:
+
+1.) Install all the prerequisite software listed above.
+
+2.) Create an 'annolex' database on your MySQL server, accessible by the
+    'annosql' user.  The createdb.csh script in the top-level directory
+    may help with this on Unix-like systems.
+
+3.) Create a settings file called annolex/settings.py based on 
+    annolex/settings.py.template.  Anything between '@@' symbols needs
+    to be replaced with something local.
+
+4.) Create the database schema with:
+       cd annolex
+       ./manage.py syncdb
+
+5.) Populate the annolexapp_annolex and annolexapp_correction tables with
+    your data.  For now, the column names are the only indication of what
+    goes in them, which should be sufficient in most cases.
+
+6.) Modify files containg paths to reflect your local environment.  That 
+    should just be annolex/apache/django.wsgi.
+    
+7.) Deployment consists of moving all the files under annolex/ to an 
+    appropriate place on your web server and configuring your server to
+    see them.  The virtualhost.template in the top-level directory 
+    contains an example Apache VirtualHost section.
