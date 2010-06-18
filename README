@@ -28,7 +28,7 @@ installers.  The basic steps to follow to run the application are:
 1.) Install all the prerequisite software listed above.
 
 2.) Create an 'annolex' database on your MySQL server, accessible by the
-    'annosql' user.  The createdb.csh script in the top-level directory
+    'annolex' user.  The createdb.csh script in the top-level directory
     may help with this on Unix-like systems.
 
 3.) Create a settings file called annolex/settings.py based on 
