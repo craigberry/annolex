@@ -18,7 +18,7 @@ WSGI web gateway interface           http://wsgi.org/wsgi/
 In principle, almost any of these components except Django itself could
 be swapped out without radical changes to the application.
 
-Use:
+Usage Summary:
 
 The project is currently a bare bones prototype.  There is no
 programmer-oriented documentation and no user documentation except
@@ -39,7 +39,7 @@ installers.  The basic steps to follow to run the application are:
        cd annolex
        ./manage.py syncdb
 
-5.) Populate the annolexapp_annolex and annolexapp_correction tables with
+5.) Populate the annolexapp_annolex and annolexapp_textlist tables with
     your data.  For now, the column names are the only indication of what
     goes in them, which should be sufficient in most cases.
 
