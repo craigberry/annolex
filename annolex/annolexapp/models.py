@@ -14,6 +14,7 @@ class AnnoLex(models.Model):
     spellcolfreq = models.IntegerField()
     wordid       = models.CharField(max_length=45,primary_key=True)
     preselected  = models.BooleanField(default=0)
+    citation     = models.CharField(max_length=30)
 
 admin.site.register(AnnoLex)
 
@@ -96,9 +97,12 @@ class CorrectionForm(ModelForm):
 
 
 class TextList(models.Model):
-    textid     = models.CharField(max_length=10, primary_key=True)
+    textid     = models.CharField(max_length=12, primary_key=True)
     author     = models.CharField(max_length=25)
-    title      = models.CharField(max_length=80)
+    title      = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ('author', 'title',)
 
     def __unicode__(self):
         author = self.author
@@ -106,8 +110,9 @@ class TextList(models.Model):
             author = author[:(self.author.find(',') + 3)] + '.'
         
         title_string = "%s: %s" % (author, self.title)
-        if len(title_string) > 32:
-            return "%s..." % title_string[0:30]
+        title_len = len(title_string)
+        if title_len > 52:
+            return "%s...%s" % (title_string[0:30], title_string[title_len-20:])
         else:
             return title_string
 

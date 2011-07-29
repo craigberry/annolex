@@ -88,7 +88,7 @@
           <th>POS</th>
     <!--      <th>Frequency</th> -->
           <th>Edit</th>
-          <th>Monk Context</th>
+          <th>Citation</th>
         </tr>
       </thead>
       <tbody>
@@ -109,7 +109,11 @@
             </form>
           </td>
           <td>
+          {% if word.citation %}
+          {{ word.citation }}
+          {% else %}
           <a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> 
+          {% endif %}
           </td>
         </tr>
     
