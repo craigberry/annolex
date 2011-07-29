@@ -13,6 +13,7 @@ class AnnoLex(models.Model):
     pos          = models.CharField(max_length=10, db_index=True)
     spellcolfreq = models.IntegerField()
     wordid       = models.CharField(max_length=45,primary_key=True)
+    preselected  = models.BooleanField(default=0)
 
 admin.site.register(AnnoLex)
 
@@ -130,6 +131,11 @@ SEARCH_MATCH_CHOICES = (
     (2, 'containing'),
 )
 
+SEARCH_FILTER_CHOICES = (
+    (1, 'All'),
+    (2, 'Preselected'),
+)
+
 class SearchForm(forms.Form):
     textid     = forms.ModelChoiceField(queryset=TextList.objects, required=False, label='Text', empty_label='(All)')
     spelling   = forms.CharField(max_length=45, required=False)
@@ -139,6 +145,7 @@ class SearchForm(forms.Form):
     matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')
     sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort')
+    filterchoice = forms.ChoiceField(choices=SEARCH_FILTER_CHOICES, initial=2, required=False, label='Filter')
 
 
 FILTER_APPROVED_CHOICES = (

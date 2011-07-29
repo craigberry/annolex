@@ -26,6 +26,7 @@ def annolex(request):
         matchchoice = annolex_session['matchchoice']
         opchoice = annolex_session['opchoice']
         sortchoice = annolex_session['sortchoice']
+        filterchoice = annolex_session['filterchoice']
     else:
         text_search = None
         spelling_search = None
@@ -35,6 +36,8 @@ def annolex(request):
         matchchoice = None
         opchoice = None
         sortchoice = None
+        filterchoice = None
+
 
      
     if request.method == 'POST':
@@ -78,6 +81,7 @@ def annolex(request):
             matchchoice = request.POST.__getitem__('matchchoice')
             opchoice = request.POST.__getitem__('opchoice')
             sortchoice = request.POST.__getitem__('sortchoice')
+            filterchoice = request.POST.__getitem__('filterchoice')
 
             page = 1
 
@@ -122,10 +126,16 @@ def annolex(request):
         elif sortchoice == '4':
             order_by_list = ('pos', 'lemma', 'spelling')
         
-        if opchoice and opchoice == '1':
-            word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj)).order_by(*order_by_list)[:2500]
+        if filterchoice and filterchoice == '2':
+            if opchoice and opchoice == '1':
+                word_list = AnnoLex.objects.filter(preselected=1).filter(reduce(operator.and_, qobj)).order_by(*order_by_list)[:2500]
+            else:
+                word_list = AnnoLex.objects.filter(preselected=1).filter(reduce(operator.or_, qobj)).order_by(*order_by_list)[:2500]
         else:
-            word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj)).order_by(*order_by_list)[:2500]
+            if opchoice and opchoice == '1':
+                word_list = AnnoLex.objects.filter(reduce(operator.and_, qobj)).order_by(*order_by_list)[:2500]
+            else:
+                word_list = AnnoLex.objects.filter(reduce(operator.or_, qobj)).order_by(*order_by_list)[:2500]
 
 
     if word_list:
@@ -146,7 +156,8 @@ def annolex(request):
                                            'wordid_search':   wordid_search,
                                            'matchchoice':     matchchoice,
                                            'opchoice':        opchoice,
-                                           'sortchoice':      sortchoice }
+                                           'sortchoice':      sortchoice ,
+                                           'filterchoice':      filterchoice }
 
 
 
