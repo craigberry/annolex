@@ -88,7 +88,10 @@
           <th>POS</th>
     <!--      <th>Frequency</th> -->
           <th>Edit</th>
-          <th>Citation</th>
+     {% if user.is_authenticated %}
+          <th>EEBO</th>
+     {% endif %}
+<!--          <th>Monk</th> -->
         </tr>
       </thead>
       <tbody>
@@ -108,13 +111,16 @@
               <input type="submit" name="which_post" value="Edit" />
             </form>
           </td>
+     {% if user.is_authenticated %}
           <td>
-          {% if word.citation %}
-          {{ word.citation }}
-          {% else %}
-          <a target="monk" href="http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}">{{ word.wordid }}</a> 
-          {% endif %}
+          <form><input type="button" value="Image" onClick="window.open('media/{{ word.get_image_url }}.png','EEBO Image','width=850,height=800,left=250')" /></form>
           </td>
+     {% endif %}
+<!--
+          <td>
+          <form><input type="button" value="Text" onClick="window.open('http://scribe.at.northwestern.edu:8090/monk/servlet?op=wordInfo&tag={{ word.wordid }}','Monk Text','width=800,height=700,left=250')" /></form> 
+          </td>
+-->
         </tr>
     
       {% endfor %}

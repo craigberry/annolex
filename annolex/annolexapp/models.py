@@ -10,11 +10,16 @@ class AnnoLex(models.Model):
     spelling     = models.CharField(max_length=40, db_index=True)
     KwicR        = models.CharField(max_length=128)
     lemma        = models.CharField(max_length=40, db_index=True)
-    pos          = models.CharField(max_length=10, db_index=True)
+    pos          = models.CharField(max_length=25, db_index=True)
     spellcolfreq = models.IntegerField()
     wordid       = models.CharField(max_length=45,primary_key=True)
     preselected  = models.BooleanField(default=0)
     citation     = models.CharField(max_length=30)
+
+    def get_image_url(self):
+        page = int(self.citation.partition('-')[2].partition('-')[0])
+        doc = (self.wordid.partition('-')[0]).partition('_')[0]
+        return '%s/%s-%05d' % (doc, doc, page)
 
 admin.site.register(AnnoLex)
 
@@ -35,8 +40,8 @@ class Correction(models.Model):
     spelling_to     = models.CharField(max_length=45, blank=True, null=True)
     lemma_from      = models.CharField(max_length=45)
     lemma_to        = models.CharField(max_length=45, blank=True, null=True)
-    pos_from        = models.CharField(max_length=10)
-    pos_to          = models.CharField(max_length=10, blank=True, null=True)
+    pos_from        = models.CharField(max_length=25)
+    pos_to          = models.CharField(max_length=25, blank=True, null=True)
     wordid_from     = models.ForeignKey(AnnoLex, related_name='wordid_from')
     wordid_to       = models.CharField(max_length=45, blank=True, null=True)
     corrected_by    = models.ForeignKey(User, related_name='corrected_by')
