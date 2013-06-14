@@ -17,7 +17,7 @@ class AnnoLex(models.Model):
     citation     = models.CharField(max_length=30)
 
     def get_image_url(self):
-        page = int(self.citation.partition('-')[2].partition('-')[0])
+        page = int(self.citation.partition('-')[0])
         doc = (self.wordid.partition('-')[0]).partition('_')[0]
         return '%s/%s-%05d' % (doc, doc, page)
 
@@ -155,7 +155,7 @@ class SearchForm(forms.Form):
     matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')
     sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort')
-    filterchoice = forms.ChoiceField(choices=SEARCH_FILTER_CHOICES, initial=2, required=False, label='Filter')
+    filterchoice = forms.ChoiceField(choices=SEARCH_FILTER_CHOICES, initial=1, required=False, label='Filter')
 
 
 FILTER_APPROVED_CHOICES = (
