@@ -17,6 +17,8 @@ class AnnoLex(models.Model):
     citation     = models.CharField(max_length=30)
 
     def get_image_url(self):
+        if not self.citation:
+            return ''
         page = int(self.citation.partition('-')[0])
         doc = (self.wordid.partition('-')[0]).partition('_')[0]
         return '%s/%s-%05d' % (doc, doc, page)
@@ -95,7 +97,7 @@ class CorrectionForm(ModelForm):
         self.fields['pos_to'].widget.attrs["size"] = 10
         self.fields['annotation'].widget.attrs["cols"] = 30
         self.fields['annotation'].widget.attrs["rows"] = 8
-         
+
     class Meta:
         model = Correction
         exclude = ('corrected_by',)
