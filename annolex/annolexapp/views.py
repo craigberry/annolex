@@ -1,6 +1,6 @@
 from django.template import loader, Context
 from django.http import HttpResponse
-from annolex.annolexapp.models import AnnoLex, CorrectionForm, SearchForm, Correction, ReviewChoicesForm
+from annolex.annolexapp.models import AnnoLex, CorrectionForm, SearchForm, Correction, ReviewChoicesForm, TextList
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
@@ -47,16 +47,23 @@ def annolex(request):
             spelling_from = request.POST.__getitem__('spelling_from')
             lemma_from = request.POST.__getitem__('lemma_from')
             pos_from = request.POST.__getitem__('pos_from')
+            citation = request.POST.__getitem__('citation')
             
             current_word.wordid = wordid_from
             current_word.spelling = spelling_from
             current_word.lemma = lemma_from
             current_word.pos = pos_from
+            current_word.citation = citation
+            textid = current_word.wordid.partition('-')[0]
+            text_name = TextList.objects.get(textid=textid).title
+            current_word.text_name = text_name
 
             editform = CorrectionForm(initial={'wordid_from': wordid_from, 
                                                'lemma_from': lemma_from, 
                                                'spelling_from': spelling_from, 
-                                               'pos_from': pos_from})
+                                               'pos_from': pos_from,
+                                               'citation': citation,
+                                               'text_name': text_name})
 
         elif request.POST.__getitem__('which_post') == 'Save':
             if not request.user.is_authenticated():
