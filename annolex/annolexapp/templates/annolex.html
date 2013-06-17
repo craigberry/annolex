@@ -29,11 +29,13 @@
         <h4 style="margin:6px">Edit word {{ current_word.citation }} {% if current_word.text_name %} from <i>{{ current_word.text_name }}</i> {% endif %}</h4>
         <p>
      {% if user.is_authenticated %}
+     {% if current_word.text_name %}
           <form>
           <input type="button" 
                        value="View EEBO Image" 
-                       onClick="window.open('media/{{ current_word.get_image_url }}.png','EEBO Image','width=850,height=800,left=250')" />
+                       onClick="window.open('media/{{ current_word.get_image_url }}.png','EEBO Image','width=1250,height=850,left=250')" />
           </form>
+     {% endif %}
      {% endif %}
         </p>
         <table>
