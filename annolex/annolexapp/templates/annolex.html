@@ -3,11 +3,13 @@
 <div id="main">
   <div id="leftbar">
   <div id="search">
-    <table>
     <form action="" method="POST">
+    <table>
     {{ searchform.as_table }}
-    <tr><td/><td><input type="submit" name="which_post" value="Search" id="submit"></td></tr>
-        <div id="searchform_errors" style="color: red;">
+    <tr><td></td><td><input type="submit" name="which_post" value="Search" id="submit"></td></tr>
+
+    <tr><td>
+    <div id="searchform_errors" style="color: red;">
             {% if searchform.errors %}
             <p>
                 Please correct the error{{ searchform.errors|pluralize }} below.
@@ -20,9 +22,10 @@
             {% endfor %}
             </ul>
             {% endif %}
-        </div>
-    </form>
+    </div>
+    </td></tr>
     </table>
+    </form>
   </div>
   <div id="editbox">
     <form action="" method="POST">
