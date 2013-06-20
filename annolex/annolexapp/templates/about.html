@@ -2,126 +2,609 @@
 {% block content %}
 
 <div id="main">
-<p align="center">AnnoLex Beta v0.13 -- 7 June 2013</p>
-<table  width="600">
+  <div id="leftbar">
+  <div id="search">
+  <ol>
+  <li><a href="#1_What_is_AnnoLex">What is AnnoLex?</a></li>
+  <li><a href="#2_How_Does_AnnoLex_Work">How Does AnnoLex Work?</a></li>
+  <li><a href="#3_The_Edit_Panel">The Edit Panel</a></li>
+  <li><a href="#4_What_errors_are_most_worth_fixing">What errors are most worth fixing</a></li>
+  <li><a href="#5_Lemmatization">Lemmatization</a></li>
+  <li><a href="#6_Part_of_speech_tagging">Part of speech tagging</a></li>
+  <li><a href="#7_What_AnnoLex_cannot_do">What AnnoLex cannot do</a></li>
+  <li><a href="#8_Future_Directions">Future Directions</a></li>
+  </ul>
+  </div>
+</div>
+<div id="wordlist">
+<table class="wordlist">
 <tr><td>
-        <h2>What is AnnoLex?</h2>
-        <p>AnnoLex is a collaborative data curation tool
-for lemmatized and morphosyntactically tagged textual data. It is built using
-the Django framework, which is written in Python, and it stores its data
-in a MySQL database. Annolex is being developed by Craig Berry and Martin Mueller
-under a grant from Academic Research Technologies at Northwestern
-University.</p>
-        <p>The data currently contained in Annolex consist of 282
-Early Modern English plays (~ six million words) by authors other than
-Shakespeare, as well as about 80,000 selected words from the ECCO eighteenth-century collection. 
-The source files are SGML encoded texts transcribed by the
-Text Creation Partnership from the microfilm images of Early English
-Books Online and Eighteenth Century Collections Online. These files were transformed
-into TEI-P5 XML files through procedures designed and implemented by
-Stephen Ramsay and Brian Pytlik Zillig, then tokenized, lemmatized, and
-morphosyntactically annotated with Morphadorner, a Natural Language
-Processing Toolkit written by Phil Burns.  </p>
-        <p>The transcriptions from microfilm images contain many errors
-and omissions. Machine-generated tokenization, lemmatization, and
-morphosyntactic annotation also add errors. Many of these errors can
-be corrected with high degrees of confidence and do not require
-consultation  of the source files. Some of them do.  AnnoLex is designed
-to support such corrections as the work of many hands at different times
-and in different places. </p>
-        <h2>What can you do with Annolex?</h2>
-        <p>The potential of Annolex is best seen by looking at its
-'verticalized' representation of the underlying text. Every word
-occurrence or token in the text is a  data row, consisting of: </p>
-       <ol>
-           <li>a unique ID for the word token</li>
-           <li>the spelling of the token</li>
-           <li>the 35 characters before the token</li>
-           <li>the 35 characters following the token</li>
-           <li>the lemma assigned to the token</li>
-           <li>the part-of-speech (POS) tag assigned to the token</li>
-       </ol>
-        <p>Users can select token ranges by spelling, POS tag, lemma,
-work, or unique word identifier, and sort return lists by those criteria. Because
-errors for the most part are not randomly distributed, it is possible to
-design 'error forcing' routines or searches that retrieve lists in which
-certain kinds of error are expected to cluster.  </p>
-        <h2>How do you correct an error?</h2>
-        <p>In order to correct an error, you must have a user account
-and log in to AnnoLex. A correction does not immediately overwrite the current text.
-In the "Edit Word" form you suggest a correction for the spelling, lemma,
-and/or POS tag of a word. When you click "Save," the suggestion is entered as a user transaction
-into a data row in a correction table that records:  </p>
-        <ol>
-            <li>your user id</li>
-            <li>a time stamp for the transaction</li>
-            <li>the token id associated with the correction</li>
-            <li>the spelling, lemma and/or POS tag that is suggested as the correction (you
-            may suggest one, two, or all three in a single transaction)</li>
-            <li>an optional annotation indicating the rationale for the change</li>
-        </ol>
-        <p>User suggestions are subject to editorial review. A user with elevated privileges may
-review and approve corrections using the "Review" screen. Any user may see suggested 
-corrections in the same place.</p>
-        <p>Notice that once there is a substantial error list, its
-analysis will provide very useful guidance to identifying likely errors
-elsewhere.</p>
-        <h2>What errors are most worth fixing?</h2>
-        <p>The most irritating and the most easily fixed errors in the
-texts result from incomplete transcriptions -- letters or words that the
-transcribers could not identify in the page images and marked as such.
-In the six million words of the 283 plays (not counting a million
-punctuation marks), there are are at least 60,000 errors of that kind.
-One in a hundred words has something wrong with it. In the 35,000 words
-of the two parts of Tamburlaine almost 1,000 words (~3%) are
-incompletely transcribed or omitted altogether. According to the <i>New
-York Times</i> (17 November 2009), Google Earth has taken to using
-volunteers to correct their maps. John Kittle, an engineer from Decatur
-Georgia, helped correct the Google map for his home town and said:</p>
-        <blockquote>Seeing an error on a map is the kind of thing that
-gnaws at me. By being able to fix it, I feel like the world is a better
-place in a very small but measurable way. </blockquote>
-        <p>That is not only nice way of expressing the ethos of
-collaborative data curation, but it also suggests that instances of this
-ethos occur with sufficient frequency to make it worthwhile to develop
-frameworks that facilitate its exercise. </p>
-        <p>Spellings and abbreviations of names in Early Modern drama
-are very inconsistent, especially in speech prefixes. Mapping this
-variance to standardized forms of names at the lemma level greatly
-increases the query potential of plays. </p>
-        <p>How many different words are used in Early Modern Drama and
-with what frequency? You can answer that question quite precisely for
-Shakespeare, who uses ~ 18,000 distinct lemmata, including proper names.
-The machine will tell you that there are ~65,000 distinct lemmata in the
-283 plays, but at least 20,000 of them are bogus lemmata that result
-from incompletely transcribed words and minor variants in the spelling
-of names and abbreviations. It would clearly be helpful for some
-inquiries to have more precise data about the lexicon of Early Modern
-drama.  This is an area where users can help.</p>
-        <p>Errors of tokenization create special problems. It is certain
-that the string "Christian nus creants" is meant to represent "Christian
-miscreants." It is equally clear that "withothers" should be tokenized
-as "with others," although you need to go to the original to determine
-whether the error was the typesetter's or the transcriber's. Annolex
-allows users to make suggestions for splitting or joining tokens. It is
-agnostic about the question whether typographical errors of this kind
-should be tacitly corrected in the transcription or explicitly marked. 
-</p>
-        <p>The manual correction of part-of-speech tags is probably an
-acquired taste.  Corpus linguists live with error rates on the order of
-3% and find that errors of that magnitude do not invalidate
-quantitatively-based analyses. There are, however, some coarse errors
-that are worth checking for in a given work. Do all the noun or proper
-name tags represent nouns or proper names? Select the list of words in a
-play that are not classified as nouns, adjectives, or verbs and look for
-cases where a word clearly belongs in one of those classes. A handful of
-such routines -- to be developed in a more elaborate tutorial -- are
-likely to catch the coarsest and most consequential errors.  </p>
+<p align="center">AnnoLex Beta v0.14 -- 20 June 2013</p>
 
-<h2>Future Directions</h2>
+<a name="1_What_is_AnnoLex"></a><h1>1. What is AnnoLex?</h1>
+
+<p>AnnoLex is a collaborative data curation tool for use with
+EEBO-TCP texts. It is useful for the identification and correction of  incompletely or incorrectly transcribed words.
+It can also be used for the manual correction of algorithmically applied
+lemmatization and part-of-speech tagging. It is built using the Python-based
+Django framework and stores its data in a MySQL database. Annolex has been
+developed by Craig Berry and Martin Mueller under a grant from Academic
+Research Technologies at Northwestern University.</p>
+
+
+<p>The data contained in the current version of AnnoLex consist
+of some 630 Early Modern English plays, masques, entertainments, or pageants by
+authors other than Shakespeare. These texts, which add up to ~15 million words,
+are drawn from SGML-encoded texts transcribed by the Text Creation Partnership
+from the microfilm images of Early English Books. The files were transformed
+into TEI-P5 XML files  with Abbot, designed
+by Brian Pytlik Zillig and Stephen Ramsay at the University of Nebraska.  They were then annotated with
+MorphAdorner, a Natural Language Processing tool suite developed by Philip R.
+Burns. Morphadorner has special procedures for tokenizing Early Modern texts,
+and it provides each token with a unique ID, a lemma, and a part-of-speech
+(POS) tag.  Lemmatizaion in the
+texts by and large follows the practice of the Oxford English Dictionary.  The POS tags follow the NUPOS tag set,
+which is described at <a href="http://panini.northwestern.edu/mmueller/nupos.pdf">http://panini.northwestern.edu/mmueller/nupos.pdf</a>.</p>
+
+<p>The TCP transcriptions from microfilm images contain many
+errors and omissions (Have a good look at the page images from which the
+transcribers worked before blaming them for their errors). Machine-generated
+tokenization, lemmatization, and morphosyntactic annotation also add errors.
+Some of these errors can be corrected with high degrees of confidence and
+without consultation of the printed sources. Many of them require a
+consultation of the source. AnnoLex is designed to support such corrections as
+the work of many hands at different times and in different places.  AnnoLex makes it relatively easy to
+align a word in the transcribed text with its position on the digital scan of
+the original printed page. </p>
+
+<a name="2_How_Does_AnnoLex_Work"></a><h1>2. How Does AnnoLex Work?</h1>
+
+<p>AnnoLex has two major views: <b>Correct</b> and <b>Review</b>.  They are accessible from the top menu
+bar.  You may look at either, but
+you must be logged in to suggest corrections in the <b>Correct </b>view, and you must have special editorial privileges to
+approve corrections in the <b>Review</b>
+view.</p>
+
+<p>Neither a correction nor its approval changes the underlying
+source text.  Think of a correction
+as an annotation  attached to a
+place in the text and of its approval as an additional annotation about the
+status of that correction.  The
+actual correction of the source texts is a separate process.  AnnoLex corrections will be incorporated
+into the next release of WordHoard (<a href="file://localhost/http/wordhoard.northwestern.edu">http:wordhoard.northwestern.edu</a>).  They will offered to the TCP consortium,
+where they are likely to undergo further review before being integrated into
+the source texts. However, if a correction has been approved, AnnoLex will
+display the corrected text so that the same error will not be corrected
+multiple times. </p>
+
+<h2>2.1 The Correct View</h2>
+
+<p>In the Correct View your browser window is divided into three
+parts. The entire right half is taken up by a display panel. The upper left
+part is a search panel in which you define what you are looking for. The lower
+left part is an edit panel where you make your suggestions. </p>
+
+<p>It helps to know a little about the underlying tables from
+which the displays are derived. In AnnoLex,  a text is &lquot;verticalized&rquot;.  Every word occurrence or token in the
+text is a data row in a table whose columns include:  </p>
+
+<ol>
+<li>a workid that points to the author and title of a work</li>
+
+<li>a unique ID for the word token</li>
+
+<li>the spelling of the token</li>
+
+<li>a few words before the token</li>
+
+<li>a few words  following the token</li>
+
+<li>the lemma assigned to the token</li>
+
+<li>the part-of-speech (POS) tag assigned to the token</li>
+</ol>
+
+<p>The display panel shows you a <b>Spelling in Context </b>with
+the spelling highlighted between the left and right context. In separate
+columns it shows the spelling, lemma, and POS tag.  The last column contains an <b>Edit</b> <b>button</b>, which activates the <b>Edit
+panel</b>. </p>
+
+
+<h3>2.1.1 The Search Panel</h3>
+
+<p>The Search panel gives you various options for constraining your
+search. There are nine options, which you may combine in any way, including
+some that are unlikely to produce useful results. </p>
+
+<p>The <b>Text</b> field lets
+you choose either a particular play or All plays. Plays are listed by author
+and title. In the current version of AnnoLex you cannot select a group of
+plays. It is either One or All. If you choose an individual play and leave the
+other options untouched the display panel will show you all the words in the
+play in their order of occurrence.  The <b>All</b> option is useful only
+if you constrain your search in other ways. Keep in mind that the underlying
+table has 15 million rows and that AnnoLex will in any event only display the
+first 2,500 results of a search.</p>
+
+<p>The <b>Spelling</b>, <b>Lemma</b>, and <b>POS</b> fields let you enter values in any or all of them.  The <b>Match</b>
+and <b>Combine </b>fields let you choose from two values each. In the <b>Match </b>field, 
+<code>starting with</code> retrieves all tokens
+that begin with the letters you specified, while <code>containing</code>
+retrieves all tokens that contain those letters.</p>
+
+<p>Here is an example: incompletely transcribed words in AnnoLex
+represent the missing letter(s) with a black dot (&#9679;).  If you
+select the anonymous play <i>Arden of
+Faversham</i> from <b>Text </b>with  &quot;&#9679;&quot; in the spelling
+field and <b>Match </b>set to <code>containing</code>,
+your search will retrieve sixteen hits. The same search with <code>starting with</code>
+will retrieve four hits. </p>
+
+<p>Another example:
+if you want to look for all the names in <i>Arden</i>,
+put &quot;np&quot; in the <b>POS</b>  field ( for &quot;noun proper&quot;) and
+set <b>Match </b>to <code>starting with</code>.</p>
+
+<p>The <b>Combine</b> field lets you choose between
+the &quot;Boolean&quot; operators &quot;and&quot; and &quot;or.&quot;
+Watch out for this field because it is tricky. Here is an example: We are still
+looking for names in <i>Arden, </i> but we want to restrict our search to
+names that begin with an &quot;s&quot; (all searches in AnnoLex are &quot;case
+insensitive,&quot; which means that the search engine does not distinguish
+between upper and lower case characters).  So we leave &quot;np&quot; in the <b>POS</b>
+field, enter &quot;s&quot; in the <b>Spelling</b>
+field, and set <b>Combine </b> to <code>and</code>
+because we want to retrieve only those words that meet the double constraint of
+being names AND beginning with &quot;s&quot;.</p>
+
+<p>If you did not look at the <b>Combine </b>field and it was previously set to <code>>or</code>
+ you will get a large result set that includes all words that
+either occur in <i>Arden, </i>OR are names,
+OR begin with an &quot;s.&quot;  Which is probably not what you wanted.  In practice, just stick with 
+<code>AND</code>, because in the current version of
+AnnoLex there are few occasions where an <code>OR</code>
+search retrieves a useful result. If you get an unexpected result, check the <b>Combine </b>field.</p>
+
+<p>Unlike the <b>Combine</b>
+field, the <b>Sort</b> field will often be
+your friend. By default it is set to the wordid (which you never see)  and will retrieve results in the order
+of their occurrence in the text.  But you can also sort results by spelling, lemma, or POS tag.  
+Returning to our s-names in <i>Arden, </i>sorting a result list by spelling
+will probably make  it much easier
+to work your way through it. </p>
+
+<p>If you assume responsibilty for an entire play as the editor
+of a Young Scholar Edition, you will at some point need to review the POS
+tagging.  Sorting your text by POS,
+Lemma, and spelling will be the most efficient way of doing this. You won't
+have to remember all the different POS tags. Instead you can focus on whether
+the next word is appropriately identified by the current tag.</p>
+
+<p>The <b>Filter</b> field
+currently has two settings. The default setting <code>All</code>
+imposes no additional constraint on the previous search constraints, but lets
+everything specified there pass through.  The <code>Preselected</code> option limits
+the specified search to words that occur only in one text.</p>
+
+<p>A search that uses the constraint of one play and only the
+additional <code>Preselected</code> constraint is
+an excellent way of flushing out suspect words. The return list will of course
+include names and other terms specific to that play, but it will also include
+spellings with orthographical errors, including words that are wrongly split or
+joined.  Here is the <i> Arden </i> list of such words:</p>
+
+<blockquote>'acpuainted', 'aftersmother', 'ahell', 'aknave',
+'Ameane', 'asnwer', 'brdged', 'Chrefe', 'crosee', 'Celipses', 'fyze',
+'forsoohe', 'frons', 'Ilyke', 'indge', 'letme', 'la nds', 'perturde',
+'seereete', 'sheis', 'staunderous', 'thyspels', 'whill'</blockquote>
+
+<p>Can we be sure that &quot;letme&quot; is two words wrongly
+joined rather than a common phrase spelled as a single word, as in
+&quot;lemme&quot; or &quot;wanna&quot;?  Well, &quot;let me&quot; occurs at least 4,200 times in 630 plays but it
+is spelled as a single word only in a text that has at least seven other
+wrongly joined words. </p>
+
+<h2>2.2 Good ways of looking for suspect words</h2>
+
+<p>There are several &quot;error-forcing&quot; routines or
+searches that will retrieve tokens that are either known to have something
+wrong with them or are likely to be wrong in some way. I have already mentioned
+some of them, but here is the whole list again.  If TCP transcribers could not read a
+word they would mark it as incomplete and record whether the missing part(s)
+consisted of characters or whole words.  In AnnoLex the symbol for a missing character is 
+the black dot (&#9679; or \u25cf). The symbol for
+a missing word is &#12296;◊ &#12297;, a lozenge (\u25ca)  wrapped in
+angle brackets. There is also a symbol for a missing &quot;span,&quot;
+which is a gap of indeterminate length, probably not more than two words, but
+it may begin or end in the middle of a word.  A missing span is represented in AnnoLex
+as  &#12296;&#12297; or an ellipsis (\u2026) wrapped in angle brackets.</p>
+
+<p>You will do a competent job of finding the most egregious spelling errors if you</p>
+
+<ol>
+<li> look at spellings unique to that text using the Filter setting <code>Preselected</code></li>
+
+<li> look at spellings in the text that contain the black dot</li>
+
+<li>look at spellings in the text that contain the lozenge</li>
+
+<li>look at spellings in the text that contain the ellipsis</li>
+
+</ol>
+
+<p>The search engine in AnnoLex has trouble with left and right
+angle brackets.  Do not use &#12296;◊&#12297; or  &#12296;…&#12297; as  search terms, but just use  the lozenge or ellipsis enclosed by
+them. </p>
+
+<p>If all errors identified from those searches are properly corrected, the text still
+may not be perfect but it will be much improved. </p>
+
+<h3>2.2.1 How to find and enter odd Unicode
+characters</h3>
+
+<p>How do you find and enter characters that are not on your
+keyboard? Windows and Macintosh computers have a character map that gives you
+lots of information about Unicode characters and how to find or enter
+them.  On a Windows machine, you
+find it at the Start Menu with the path Start/All Programs/Accessories/System
+Tools/Character Map.  On the
+Macintosh, go to System Preferences, choose Keyboard, and check the box <b>Show Keyboard and Character Viewers in menu
+bar.</b></p>
+
+<p><b></b></p>
+
+<p>Unicode characters have four-digit names, with each digit having
+16 different values including 0-9 and a-f. In one standard notation for a
+Unicode character you add the prefix &quot;\u&quot; to the digits. The four
+characters that you are most likely to need for working with the Early Modern
+drama texts in AnnoLex are</p>
+
+<p>1. &#9679; the black circle (\u25cf)</p>
+
+<p>2. ◊ the lozenge  (\u25ca)</p>
+
+<p>3. … the horizontal ellipsis (\u2026)</p>
+
+<p>The Macintosh character viewer has a <b>Favorites</b> section that lets you select characters you use often. If
+you are at a given point in a text and want to enter a &quot;favorite&quot; you
+just double-click on it in the <b>Favorites</b> section.  Windows does not seem to
+have this feature. But you can make a text file with those four characters,
+keep it open and just cut and paste from it. </p>
+
+<a name="3_The_Edit_Panel"></a><h1>3. The Edit Panel</h1>
+
+<p>The <b>Edit</b> panel
+occupies the lower left part of your browser window.  You must be logged in to save your
+corrections. If you do not see a button that says: <code>View EEBO Image</code> you are not logged in. </p>
+
+<p>If you click on the Edit button on the right edge of the display panel, the top line
+of the <b>Edit</b> panel changes and displays  a command of the following
+kind:</p>
+
+<p><code>Edit word 5-b-2520 from <i>Arden of Faversham</i></code></p>
+
+<p>&quot;5-b-2520 &quot; is a three-part unique identifier where</p>
+
+<p>1. The first part consisting of one or more digits, represents a digital image
+identifier and retrieves that image, which is nearly always a double page.</p>
+
+<p>2. The
+second part ('a' or 'b') tells you whether the word is found on the left or
+right side of a double page image</p>
+
+<p>3. The
+third part is a wordcounter incrementing by ten. In this case it identifies the
+word as word 252.</p>
+
+<p>If you click on <code>View EEBO Image </code>you will see the two pages of image #5.  
+The reference clearly tells you whether
+your word is on the left or right page. But it will take a little calculation
+and eyeballing to figure out just where on the page your word will be.  <i>Arden</i> is a verse play, and a line of
+blank verse will on average have eight. words. A rough count tells you that
+there are about 35 lines on each page.  The word count per page in this particular text is going to be somewhere
+between 250 and 300 words. So word b-2520 should be somewhere in the lower
+third of the right page.  And it
+indeed it is on line 11 counting from the bottom. </p>
+
+<p>It will probably take you a little while to navigate a text
+for the first five pages, but you will get the hang of it.</p>
+
+
+<p>When you click on the Edit button something else happens:
+the  labels for the <b>Spelling</b>, <b>Lemma</b>, and <b>POS </b> fields of the Edit panel will be
+populated with data from the data whose <b>Edit</b>
+button you clicked. Those values will stay the same until you click another
+Edit button and populate the labels with new values. </p>
+
+<h2>3.1 What happens when you correct an error?</h2>
+
+<p>In order to correct an error, you must have a user account and
+log in to AnnoLex.  You cannot
+create your own user account but must request it from martinmueller@northwestern.edu.
+</p>
+
+<p>It is important to have a clear sense of what happens or does
+not happen when you  spot an error
+and correct it. It is impossible for you to overwrite the original text of the
+source. A correction you make is a suggestion that is recorded as a distinct
+transaction and passed on to an editor for review and approval. </p>
+
+<p>You can suggest new values for <b>Spelling</b>, <b>Lemma</b>, or <b>POS</b>, separately or together. In the
+Annotation field you can also record informal comments. This is helpful in
+cases where there is ambiguity or unusual difficulty. If you are uncomfortable
+with, or uncertain about, POS tags do not bother with them.</p>
+
+<p>It  is not your
+task to standardize or modernize the spelling of the text. Early Modern
+spelling is very varied, and the standardization of spelling was a process that
+went on at an accelerating pace from the late 16th to the late 18th
+century.  That said, there are
+spellings that are clearly wrong by the standards of their day, and a modern
+eye with a little training can catch them.  Here are some obvious errors with their corrections:</p>
+
+<blockquote>
+<table>
+<tr><td>acpuainted</td><td>acquainted</td></tr>
+<tr><td>la nds</td><td>lands</td></tr>
+<tr><td>inturd</td><td>iniurd</td></tr>
+<tr><td>perturde</td><td>periurde</td></tr>
+<tr><td>seereete</td><td>secreete</td></tr>
+<tr><td>staunderous</td><td>slaunderous</td></tr>
+<tr><td>thyspels</td><td>thy spels</td></tr>
+</table>
+</blockquote>
+
+<p>Notice that the clues involve consonants rather than
+vowels.  There is no way of telling
+whether the author or printer would have thought of  &quot;secreete&quot; as a plausible
+spelling. It does not actually occur in any play, but doubling of vowels or
+consonants is common enough in the 16h century.  But you cannot spell &quot;secret&quot;
+without some guttural consonant.  Thus &quot;seereete&quot; is an impossible spelling, but confusing
+&quot;e&quot; and &quot;c&quot; is very common. </p>
+
+<p>There is no English word that begins with &quot;nds&quot;. But
+the space between words in Early print culture is a highly variable thing. It
+is easy not to see it where it is there, or to see it where it is not there.
+Thus &quot;la nds&quot; must be &quot;lands&quot;, especially in a play that
+turns on property rights. </p>
+
+<p>There could be such a word as &quot;thyspels,&quot; but it is
+spoken by Mosbie, breaking up with his mistress Alice, whom he describes as a
+witch whose spells he will break.  So it must be &quot;thy spels.&quot;  The spelling &quot;spels&quot; for the
+plural of &quot;spell&quot; is quite common. </p>
+
+<p>A misspelling of a word may be the fault of of the transcriber
+or of the printer. It is not always easy to tell the difference. Correct a
+spelling that strikes you as obviously wrong, when looked at from the
+perspective of a 16th or 17th century reader. Leave it to the editor to figure
+out what to do with spellings that are printer's errors.  A lot of early modern books have special
+errata sections in which the printers apologize, often profusely, for their
+many errors and supply corrections for the ones they spotted after the
+printing.  Spelling varied and from
+our perspective was all over the map, but they had a very clear sense that
+mistakes could and often did happen.</p>
+
+<p>When you have made your suggestions and  click &quot;Save,&quot; they are  entered as a user transaction in a
+separate correction table that automatically records:</p>
+
+<ol>
+<li>your user id</li>
+<li>a time stamp for the transaction</li>
+<li>the token id associated with the correction</li>
+<li>the values for spelling, lemma or POS tag that you suggested</li>
+<li>an optional annotation indicating the rationale for the change</li>
+</ol>
+
+<p>You can see a record of that transaction if you switch from
+the <b>Correct</b> to the <b>Review</b> view.  There you see a curation log, and its
+five-column table tells you something about the workflow of AnnoLex. The first
+column shows the correction with the original text in strike-through mode and
+the replacement in bold.  You see
+who made the correction and when. You see whether the correction has been
+approved and by whom.  You also see
+whether the approved correction has been &quot;applied,&quot; that is, incorporated into the source text.</p>
+
+<h2>3.2 Three types of curation: Update, Insert, Delete</h2>
+
+<p>In the lower left corner of the <b>Edit</b> field you see a drop-down selector that lets you choose from three values:
+<code>Update, Insert, Delete</code> . They refer to
+three different modes of curation. The default setting is <code>Update.</code> Keep in mind that this button sets a
+mode of operation, but does not perform any action itself.  It is the <b>Save</b> button that executes the operation.</p>
+
+<h3>3.2.1 Update</h3>
+
+<p>In an Update operation you change the value of a  spelling , lemma, or POS tag, but this
+change does not affect the sequence of tokens in the underlying text.  Changing &quot;staunderous&quot; to
+&quot;slaunderous&quot; is an update. This is by far the most common form of
+curation, and it is a simple and single-step operation. </p>
+
+<p>Insert and Delete are more complex operations that require two
+steps, each of which needs to be saved separately. In a future version of
+AnnoLex, these steps may be automated, but right you will have to go them
+yourself. They are not difficult, but they require attention. </p>
+
+<h3>3.2.2 Delete</h3>
+
+<p><b>Delete</b> may take more time but is in some ways
+easier .  Consider &quot;la nds&quot; from the <i>Arden </i> list of unique spellings.  
+The search for tokens unique to <i>Arden </i> retrieved &quot;nds&quot; preceded by the
+token &quot;la.&quot; This is a clear case of a single word wrongly split, and
+the page image makes it clear that the error is the printer's .  In this case you need to
+&quot;update&quot; one of the two words and &quot;delete&quot; the other. You
+start by updating the word retrieved by your search, in this case
+&quot;nds,&quot; changing the spelling to &quot;lands&quot; and the lemma to
+&quot;land&quot; (the POS tag  &quot;n2&quot; for a plural noun happens to be correct). </p>
+
+<p>After saving your update, you need to look at its result in
+the Review. Your entry begins with words like &quot;Update
+A20951-065430.&quot;  The string of
+numbers is an identifier that MorphAdorner uses to keep track of its
+operations. The numbers after the hyphen are a word counter.  You updated 'nds' to 'lands'. Now you
+need to delete the previous word 'la'. This word counter is like the <b>Correct</b> word counter in incrementing by
+10. So the the previous word should be A20951-065420.  Do the following:</p>
+
+<ul>
+<li>Copy the string A20951-065430</li>
+<li>Return to the  <b>Correct </b>view,</li>
+<li>Paste the string into the <b>Word ID</b> field and change the last two digits from 30 to 20</li>
+<li>Click the <b>Search</b> button.</li>
+</ul>
+
+<p>This <b>Search </b>should<b> </b>retrieve the expected &quot;la&quot;. </p>
+
+<ul>
+<li>Click the Edit button</li>
+<li>Change the <b>Update</b> button to <b>Delete</b></li>
+<li>Click on <b>Save</b></li>
+</ul>
+
+<p>Be sure to click the <b>Save</b>
+button. Otherwise no Delete operation will be executed.  You can check the result of this
+operation by going to the <b>Review</b>
+view. If you did it right its latest entry at the top should say Delete
+A20951-064520 and identify you as the corrector. </p>
+
+<h3>3.2.3 Insert</h3>
+
+<p>If a word is wrongly joined and needs to be split, there will
+be two tokens where previously there was only one. You need to update the
+existing token and then insert a new token. The token &quot;thyspels&quot; from
+<i>Arden</i> is an example.  In a first step you update
+&quot;thyspels&quot; to the spelling &quot;thy,&quot; the lemma
+&quot;thy,&quot; and the POS tag &quot;po21,&quot; which is the code for the
+possessive pronoun, second person singular.  After you save that update, you change <code>Update</code>
+ to <code>Insert </code>and create a new record
+from scratch by filling in the values for  spelling (spels),  lemma,
+(spell) and POS tag (n2).  Click on <b>Save </b> to save your insert operation.</p>
+
+<p>If you are uncomfortable with or uncertain about POS tags, leave the POS field blank. </p>
+
+<p>You can check the result of your Insert operation by turning
+to the <b>Review</b> view, which should now display a record that begins like</p>
+
+<p>Insert A20951-148000 </p>
+
+<p>Note that the insert operation does not create a new unique
+identifier but is associated with the original record for &quot;thyspels.&quot;
+</p>
+
+<h2>3.3 A digression about long &quot;s&quot;</h2>
+
+<p>In some TCP texts long &quot;s&quot; is transcribed as such.
+In others it is recorded as an ordinary &quot;s.&quot; Practice is consistent
+within a text but inconsistent across the corpus. The AnnoLex data tables show
+all forms of &quot;s&quot; in the normalized form. But in the texts from which
+those tables are derived long &quot;s&quot; is preserved if it was transcribed
+in the first place. Use the modern &quot;s&quot; in all your corrections. There
+will be ways of adjusting spellings for those texts originally encoded with
+long &quot;s.&quot; </p>
+
+<a name="4_What_errors_are_most_worth_fixing"></a><h1>4. What errors are most worth fixing?</h1>
+
+<p>The most irritating and the most easily fixed errors in the
+texts result from incomplete transcriptions -- letters or words that the
+transcribers could not identify in the page images and marked as such. In the
+15 million words of the 630 plays there are about 60,000 errors of that
+kind.  They are unevenly distributed:
+in the anonymous <i>Wealth and Health</i>,
+an interlude from 1565, printed in heavily blotched blackface type, seven out
+of a hundred words are incompletely transcribed. But if you look at any of the
+page images, you may want to salute the transcriber for getting 93 out of 100
+right. </p>
+
+<p>According to the <i>New York Times</i> (17 November 2009),
+Google Earth has taken to using volunteers to correct their maps. John Kittle,
+an engineer from Decatur Georgia, helped correct the Google map for his home
+town and said:</p>
+
+<p>Seeing an error on a map is the kind of thing that gnaws
+at me. By being able to fix it, I feel like the world is a better place in a
+very small but measurable way.</p>
+
+<p>That is not only a nice way of expressing the ethos of
+collaborative data curation, but it also suggests that instances of this ethos
+occur with sufficient frequency to make it worthwhile to develop frameworks
+that facilitate its exercise.</p>
+
+<p>Spellings and abbreviations of names in Early Modern drama are
+very inconsistent, especially in speech prefixes. Mapping this variance to
+standardized forms of names at the lemma level greatly increases the query
+potential of plays.</p>
+
+<p>As discussed above there are special problems with errors of
+tokenization and the DELETE and INSERT operations they involve. Fixing them is
+a fussy business, but there may be some pleasure in converting &quot;Christian
+nus creants&quot; to their  proper state of &quot;Christian
+miscreants.&quot; </p>
+
+<a name="5_Lemmatization"></a><h1>5. Lemmatization</h1>
+
+<p>How many different words are used in Early Modern drama? You
+can answer this question quite precisely for Shakespeare, who uses about 18,000
+distinct lemmata. A lemma is the base form of a word and the form in which it
+is usually listed in a dictionary.  The program MorphAdorner, which maps the surface forms of words to a
+lemma counts 135,000 different lemmata in Early Modern Drama. But many of these
+are bogus forms that result from incompletely transcribed words or minor
+variants in the spelling of names, abbreviations, and ordinary words. Human
+readers are quite good at mapping surface forms to a standard lemma. It would
+clearly be helpful to have precise data about the lexical scope of Early Modern
+drama. This is an area where users can help a lot. </p>
+
+<a name="6_Part_of_speech_tagging"></a><h1>6. Part of speech tagging</h1>
+
+<p>The manual correction of part-of-speech tags is probably an
+acquired taste. Corpus linguists live with error rates on the order of 3% and
+find that errors of that magnitude do not invalidate quantitatively-based
+analyses. 3% of 15 millions is 450,000.  That is a lot of errors.  There are some errors that are worth checking for manually in a given
+text. Are proper nouns identified correctly?</p>
+
+<a name="7_What_AnnoLex_cannot_do"></a><h1>7. What AnnoLex cannot do</h1>
+
+<p>AnnoLex is a tool
+for the collaborative curation of the most common errors in TCP texts. It can
+also be used for the curation of such errors in other texts that follow similar
+encoding practices.  It is unlikely
+to be an efficient tool for the curation of texts created through optical
+character recognition (OCR). Texts transcribed in this manner have a much
+higher error rate, but also allow for much closer and granular alignment of text and image. 
+The <a href="http://www.18thconnect.org/typewright">18thConnect Typewright</a> is a good example of an OCR-based
+curation tool.</p>
+
+<p>AnnoLex does not help with missing paragraphs or pages for
+several reasons including the simple fact that the page images may be missing.
+The transcribers of TCP texts were instructed to ignore passages written in
+other alphabets--mainly Greek or Hebrew. Transcription of such passages
+requires quite specialized and palaeographical skills. The same is true of  texts with a lot of mathematical,
+scientific, or musical notation. Successful curation of  texts with such passages  probably requires an approach in which
+you begin with a census of  what is
+missing and seek to match texts with interested and qualified curators.  Such &quot;brokering&quot; is likely to
+be more important than the choice of a particular curation tool.</p>
+
+<p>The TCP transcriptions include some, but not very many, errors
+in TEI-encoding.  Prose and verse
+are not always encoded in &lt;p&gt; or &lt;l&gt; tags, a stage direction may be
+taged as a speaker label, and so forth.  AnnoLex is of no help for such cases.  There are important forms of curation
+that go beyond the correction of  obvious errors. For instance, only about half of Early Modern plays have
+cast lists and are clearly divided into acts and scenes.  AnnoLex is not a proper tool for the enrichment
+of texts with metadata, although it is an excellent tool for the review and
+correction of algorithmically supplied linguistic metadata. </p>
+
+<p>In summary, AnnoLex is quite good at what it does, but what it
+does is quite limited. However, and to repeat an earlier point: if the
+scholarly community that works with Early Modern data took to collaborative and
+dispersed curation. using AnnoLex to fix all or most of the little things that
+can be fixed with, many of the EEBO-TCP texts would be in much better shape
+and--excepting texts with sizable <i>lacunae--</i>
+most of them would be good enough for most purposes. And the great thing about
+&quot;good enough&quot; is that it is good enough. </p>
+
+
+<a name="8_Future_Directions"></a><h1>8. Future Directions</h1>
 <p>There are many possible and desireable improvements to the current beta 
 version of the software. A few that have occurred to us so far are:</p>  
 <ul>
+<li>Provide more sophisticated split and join operations to avoid using insert and delete
+for this purpose.</li>
 <li>Group correction operations for applying (or approving) the same correction to an entire
 set of search results.</li>
 <li>Import and export capabilities to facilitate loading arbitrary data sets
@@ -134,8 +617,7 @@ create one's own account.</li>
 <li>External authentication, allowing integration with institutional user IDs.</li>
 </ul>
 </td></tr>
-</table>
 </div>
-
+</div>
 
 {% endblock %}
