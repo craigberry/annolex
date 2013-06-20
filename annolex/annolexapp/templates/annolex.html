@@ -30,11 +30,9 @@
         <p>
      {% if user.is_authenticated %}
      {% if current_word.text_name %}
-          <form>
           <input type="button" 
                        value="View EEBO Image" 
                        onClick="window.open('media/{{ current_word.get_image_url }}.png','EEBO Image','width=1250,height=850,left=250')" />
-          </form>
      {% endif %}
      {% endif %}
         </p>
@@ -53,7 +51,7 @@
         <tr>
         </thead>
         <tbody>
-        <td>Spelling ({{ current_word.spelling }}):</td><td>{{ editform.spelling_to }}</td>
+        <tr><td>Spelling ({{ current_word.spelling }}):</td><td>{{ editform.spelling_to }}</td>
         </tr>
         <tr>
         <td>Lemma ({{ current_word.lemma }}):</td> <td> {{ editform.lemma_to }}</td>
