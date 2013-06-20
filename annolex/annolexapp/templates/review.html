@@ -27,8 +27,8 @@
   </div>
   </div>
   <div id="corrections">
-    {% if corrections %}
     <table class="wordlist">
+    {% if corrections %}
       <thead>
         <tr>
         <th>Correction</th>
@@ -88,15 +88,11 @@
       {% endfor %}
 
       </tbody>
-    </table>
     {% else %}
-    <table width = "50%">
     <tr><td>There are currently no corrections to review.</td></tr>
-    </table>
     {% endif %}
+    </table>
   </div> <!-- wordlist -->
-
-
 </div> <!-- main -->
 <div id="pagination" class="pagination" align="right">
     <span class="step-links">
