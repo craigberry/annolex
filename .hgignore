@@ -1,3 +1,4 @@
 syntax: glob
 *.pyc
 *.png
+.DS_Store
