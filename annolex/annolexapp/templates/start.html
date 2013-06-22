@@ -20,13 +20,12 @@
     }
     div {
       -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
       border-radius: 10px;
     }
     a {text-decoration: none;}
     #topbar {
       width:100%;
-      margin:0px 0px 5px 0px;
+      margin:2px 0px 5px 0px;
       background-color: #003377;
       font-size: 14px;
       color: white;
@@ -40,7 +39,7 @@
     #main #leftbar {
       float: left;
     }
-    #main #search {
+    #main #search, #editbox {
       width:410px;
       border-left:1px dotted #000; 
       border-right:1px dotted #000; 
@@ -49,15 +48,15 @@
       background-color:#99ccff;
       margin:0px 20px 5px 0px;
     }
-    #main #editbox {
+    #main #image_control {
       width:410px;
-      border-left:1px dotted #000; 
-      border-right:1px dotted #000; 
-      border-top:1px dotted #000; 
-      border-bottom:1px dotted #000;
-      background-color:#99ccff;
-      margin:0px 20px 0px 0px;
+      background-color: #003377;
+      font-size: 14px;
+      color: white;
     }
+    #image_control a:link, #topbar a:visited {color:white;}
+    #image_control a {padding:0 7px;}
+    #image_control a:hover {color:#fff; font-weight: bold;}
     #main #rightbar {
       float: right;
     }
@@ -75,7 +74,6 @@
       border-color: black;
       background-color: white;
       -webkit-border-radius: 7px;
-      -moz-border-radius: 7px;
       border-radius: 7px;
     }
     table.wordlist th {
@@ -85,13 +83,11 @@
       border-color: gray;
       background-color: white;
       -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
       border-radius: 4px;
     }
     table.wordlist tr {
       background-color: white;
        -webkit-border-radius: 4px;
-      -moz-border-radius: 4px;
       border-radius: 4px;
     }
     table.wordlist td {
@@ -100,7 +96,6 @@
       border-style: inset;
       border-color: gray;
       -webkit-border-radius: 2px;
-      -moz-border-radius: 2px;
       border-radius: 2px;
     }
     table.wordlist a:hover {font-weight: bold;}

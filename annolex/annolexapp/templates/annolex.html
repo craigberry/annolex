@@ -1,5 +1,59 @@
 {% extends "start.html" %}
 {% block content %}
+<script language="JavaScript" type="text/javascript">
+    
+    function toggle_inline(nr) {
+        displayNew = (document.getElementById(nr).style.display == 'none') ? 'inline' : 'none';
+        document.getElementById(nr).style.display = displayNew;
+    }
+    function toggle_block(nr) {
+        displayNew = (document.getElementById(nr).style.display == 'none') ? 'block' : 'none';
+        document.getElementById(nr).style.display = displayNew;
+    }
+    function view_image_click() {
+        toggle_inline('wordlist'); 
+        toggle_inline('image_wrapper'); 
+        toggle_block('pagination');
+        toggle_inline('image_control');
+        document.getElementById('kwic_editbox').innerHTML = 
+            (document.getElementById('eebo_button').value == 'View EEBO Image') 
+                                ? document.getElementById('kwic_wordlist').innerHTML : 
+                                '';
+        document.getElementById('eebo_button').value 
+             = (document.getElementById('eebo_button').value == 'View EEBO Image') 
+                ? 'Hide EEBO Image' : 
+                'View EEBO Image';
+        document.getElementById('eebo_image').src = 'media/{{ current_word.get_image_url }}.png';
+    }
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="media/js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="media/js/jquery-panzoom.js"></script>
+<script type="text/javascript">
+        $(document).ready(function () {
+        function initPanZoom() {
+          $('#image_div img').panZoom({
+            'zoomIn'    : $('#zoomin'),
+            'zoomOut'   : $('#zoomout'),
+            'panUp'     : $('#panup'),
+            'panDown'   : $('#pandown'),
+            'panLeft'   : $('#panleft'),
+            'panRight'  : $('#panright'),
+            'fit'       : $('#fit'),
+            'destroy'   : $('#destroy'),
+            'directedit': true,
+            'debug'     : false,
+            'aspect'    : true,
+            'mousewheel': true,
+          });
+        };
+
+        initPanZoom();
+
+       });
+</script>
 <div id="main">
   <div id="leftbar">
   <div id="search">
@@ -30,18 +84,30 @@
   <div id="editbox">
     <form action="" method="POST">
         <h4 style="margin:6px">Edit word {{ current_word.citation }} {% if current_word.text_name %} from <i>{{ current_word.text_name }}</i> {% endif %}</h4>
-        <p>
+        <p style="margin:12px; font-size:8pt" id="kwic_editbox"></p>
+        <table>
+        <tr>
+        <td>
      {% if user.is_authenticated %}
      {% if current_word.text_name %}
-          <input type="button" 
+<!-- 
+         <input type="button" 
                        value="View EEBO Image" 
                        onClick="window.open('media/{{ current_word.get_image_url }}.png','EEBO Image','width=1250,height=850,left=250')" />
+-->
+         <input id="eebo_button" type="button" 
+                       value="View EEBO Image" 
+                       onclick="view_image_click();" />
      {% endif %}
      {% endif %}
-        </p>
+        </td>
+        <td>
+        </td>
+        </tr>
+        </table>
         <table>
         <col align="right"/>
-        <col align = "left"/>
+        <col align="left"/>
         <col align="right"/>
         <thead>
         <tr>
@@ -92,7 +158,27 @@
       <input type="hidden" name="pos_from" value="{{ current_word.pos }}" />
     </form>
   </div> <!-- editbox -->
-  </div>
+
+  <div id="image_control" style="display: none">
+    <table>
+      <tr><td style="text-align: right;"><a id="zoomin" href="#">Zoom In</a></td>
+      <td></td>
+      <td style="text-align: center;"><a id="panup" href="#">Pan Up</a></td>
+      <td></td>
+      </tr>
+      <tr><td style="text-align: right;"><a id="zoomout" href="#">Zoom Out</a></td>
+      <td style="text-align: right;"><a id="panleft" href="#">Pan Left</a></td>
+      <td></td>
+      <td style="text-align: left;"><a id="panright" href="#">Pan Right</a></td>
+      </tr>
+      <tr><td style="text-align: right;"><a id="fit" href="#">Reset</a></td>
+      <td></td>
+      <td style="text-align: center;"><a id="pandown" href="#">Pan Down</a></td>
+      <td></td>
+      </tr>
+      </table>
+  </div> <!-- image_control -->
+  </div> <!-- leftbar -->
   <div id="wordlist">
     <table class="wordlist">
     {% if words %}
@@ -116,7 +202,7 @@
       <tbody>
       {% for word in words.object_list %}
         <tr{% ifequal word.wordid current_word.wordid %} style="background-color: #99ccff;"{% endifequal %}>
-          <td>{{ word.KwicL }} <b style="color: red;">{{ word.spelling }}</b> {{ word.KwicR }}</td>
+          <td{% ifequal word.wordid current_word.wordid %} id="kwic_wordlist"{% endifequal %}>{{ word.KwicL }} <b style="color: red;">{{ word.spelling }}</b> {{ word.KwicR }}</td>
           <td>{{ word.spelling }}</td>
           <td>{{ word.lemma }}</td>
           <td>{{ word.pos }}</td>
@@ -150,6 +236,12 @@ spelling, lemma, and part-of-speech identifications in context.
     {% endif %}
     </table>
   </div> <!-- wordlist -->
+  <div id="image_wrapper" style="display: none;">
+    <table class="wordlist">
+     <tr><td><div id="image_div" style="width: 1000px; height: 700px; overflow: hidden;"><img id="eebo_image" src="media/empty_1000x700.png" alt="EEBO Image Missing"/></div></td></tr>
+    </table>
+    
+  </div> <!-- image_div -->
 </div> <!-- main -->
 <div id="pagination" class="pagination" align="right">
     {% if words %}
