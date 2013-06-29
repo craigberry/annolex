@@ -36,6 +36,14 @@ OPERATIONS = (
     (3, 'Delete'),
 )
 
+STATUS_CHOICES = (
+    (0, '(All)'),
+    (1, 'Unapproved'),
+    (2, 'Approved'),
+    (3, 'Rejected'),
+    (4, 'Held'),
+)
+
 class Correction(models.Model):
     operation       = models.IntegerField(choices=OPERATIONS, default=1)
     spelling_from   = models.CharField(max_length=45)
@@ -48,11 +56,12 @@ class Correction(models.Model):
     wordid_to       = models.CharField(max_length=45, blank=True, null=True)
     corrected_by    = models.ForeignKey(User, related_name='corrected_by')
     corrected_date  = models.DateTimeField(auto_now_add=True)
-    approved_by     = models.ForeignKey(User, related_name='approved_by', blank=True, null=True)
-    approved_date   = models.DateTimeField(blank=True, null=True)
+    status_by       = models.ForeignKey(User, related_name='status_by', blank=True, null=True)
+    status_date     = models.DateTimeField(blank=True, null=True)
     applied_by      = models.ForeignKey(User, related_name='applied_by', blank=True, null=True)
     applied_date    = models.DateTimeField(blank=True, null=True)
     annotation      = models.TextField(blank=True, null=True)
+    status          = models.IntegerField(choices=STATUS_CHOICES, default=1)
 
     class Meta:
         ordering = ('-corrected_date',)
@@ -100,7 +109,7 @@ class CorrectionForm(ModelForm):
 
     class Meta:
         model = Correction
-        exclude = ('corrected_by',)
+        exclude = ('corrected_by', 'status')
 
 
 class TextList(models.Model):
@@ -160,11 +169,6 @@ class SearchForm(forms.Form):
     filterchoice = forms.ChoiceField(choices=SEARCH_FILTER_CHOICES, initial=1, required=False, label='Filter')
 
 
-FILTER_APPROVED_CHOICES = (
-    (1, 'Unapproved'),
-    (2, 'Approved'),
-)
-
 FILTER_APPLIED_CHOICES = (
     (1, 'Unapplied'),
     (2, 'Applied'),
@@ -173,6 +177,6 @@ FILTER_APPLIED_CHOICES = (
 
 class ReviewChoicesForm(forms.Form):
     filterwho      = forms.ModelChoiceField(queryset=User.objects, required=False, label='Corrector', empty_label='(All)')
-    filterapproved = forms.ChoiceField(choices=FILTER_APPROVED_CHOICES, initial=1, required=True, label='Approved')
+    filterstatus   = forms.ChoiceField(choices=STATUS_CHOICES, initial=1, required=True, label='Status')
     filterapplied  = forms.ChoiceField(choices=FILTER_APPLIED_CHOICES, initial=1, required=True, label='Applied')
 

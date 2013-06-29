@@ -74,6 +74,7 @@ def annolex(request):
                 if editform.is_valid():
                     form = editform.save(commit=False)
                     form.corrected_by = request.user
+                    form.status = 1
                     form.save()
 
         elif request.POST.__getitem__('which_post') == 'Search':
@@ -190,35 +191,45 @@ def review(request):
     annolex_review_session = request.session.get('annolex_review_session')
     if annolex_review_session:
         filterwho = annolex_review_session['filterwho']
-        filterapproved = annolex_review_session['filterapproved']
+        filterstatus = annolex_review_session['filterstatus']
         filterapplied = annolex_review_session['filterapplied']
     else:
         filterwho = None
-        filterapproved = None
+        filterstatus = 1
         filterapplied = None
 
      
     if request.method == 'POST':
-        if request.POST.__getitem__('which_post') == 'Approve':
+        which_post = request.POST.__getitem__('which_post')
+        if 'Status' in which_post:
             if not (request.user.is_authenticated() and request.user.is_superuser):
                 return HttpResponse("You must be logged in as a supersuser to approve corrections.")
 
             correction_id = request.POST.__getitem__('id')
+            status = 0
+            if which_post == 'Status_Unapproved':
+                status = 1
+            if which_post == 'Status_Approved':
+                status = 2
+            if which_post == 'Status_Rejected':
+                status = 3
+            if which_post == 'Status_Held':
+                status = 4
             
             current_correction = Correction(correction_id)
-            record_approval(current_correction, request.user.id)
+            record_status(current_correction, status, request.user.id)
 
-
-        elif request.POST.__getitem__('which_post') == 'Filter':
+        elif which_post == 'Filter':
             reviewchoicesform = ReviewChoicesForm(request.POST)
             request.session['reviewchoicesform'] = request.POST
                 
             filterwho = request.POST.__getitem__('filterwho')
-            filterapproved = request.POST.__getitem__('filterapproved')
+            filterstatus = request.POST.__getitem__('filterstatus')
             filterapplied = request.POST.__getitem__('filterapplied')
 
             page = 1
-
+        else:
+            return HttpResponse("unknown post type: " + which_post)
 
     if not page and request.GET.get('page', '1') == 'last':
         page = request.GET.get('page', '1')
@@ -233,10 +244,8 @@ def review(request):
     if filterwho:
             qobj.append (Q(corrected_by__exact=filterwho))
 
-    if filterapproved and filterapproved == '2':
-            qobj.append (Q(approved_date__isnull=False))
-    else:
-            qobj.append (Q(approved_date__isnull=True))
+    if filterstatus and filterstatus <> '0':
+            qobj.append (Q(status=filterstatus))
 
     if filterapplied and filterapplied == '2':
             qobj.append (Q(applied_date__isnull=False))
@@ -261,7 +270,7 @@ def review(request):
 
 
     request.session['annolex_review_session'] = { 'filterwho':      filterwho,
-                                                  'filterapproved': filterapproved,
+                                                  'filterstatus': filterstatus,
                                                   'filterapplied':  filterapplied }
 
 
@@ -272,12 +281,12 @@ def review(request):
     t = loader.get_template("review.html")
     return HttpResponse(t.render(c))
 
-def record_approval(correction, user_id):
+def record_status(correction, status, user_id):
     from django.db import connection, transaction
 
     cursor = connection.cursor()
-    sql = "UPDATE annolexapp_correction SET approved_by_id = %s, approved_date = now() WHERE id = %s"
-    cursor.execute(sql, [user_id, correction.id])
+    sql = "UPDATE annolexapp_correction SET status_by_id = %s, status_date = now(), status=%s WHERE id = %s"
+    cursor.execute(sql, [user_id, status, correction.id])
 
     if correction.operation == 1: # Update
     
