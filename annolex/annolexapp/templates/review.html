@@ -40,9 +40,7 @@
         <th>Corrector</th>
         <th>Approver</th>
         <th>Applier</th>
-        {% if user.is_authenticated and user.is_superuser %}
-            <th>Status</th>
-        {% endif %}
+        <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -78,9 +76,9 @@
           <td>{{ correction.status_by }} <br> {{ correction.status_date }}</td>
           <td>{{ correction.applied_by }} <br> {{ correction.applied_date }}</td>
 
+          <td>
           {% if user.is_authenticated and user.is_superuser %}
 
-          <td>
             <form action="" method="post" onsubmit="">
               <select id="select_status" 
                       name="which_post" 
@@ -91,11 +89,14 @@
                   <option value="Status_Held"{% ifequal correction.status 4 %} selected="4" {% endifequal %}>Held</option>
               </select>
               <input type="hidden" name="id" value="{{ correction.id }}" />
-<!--              <input type="submit" name="which_post" value="Approve" /> -->
             </form>
-          </td>
-          
+          {% else %}
+              {% ifequal correction.status 1 %} Unapproved {% endifequal %}
+              {% ifequal correction.status 2 %} Approved {% endifequal %}
+              {% ifequal correction.status 3 %} Rejected {% endifequal %}
+              {% ifequal correction.status 4 %} Held {% endifequal %}
           {% endif %}
+          </td>
         </tr>
     
       {% endfor %}
