@@ -6,6 +6,7 @@
     Alias /favicon.ico /usr/local/django/projects/annolex/media/favicon.ico
 
     Alias /media/ /usr/local/django/projects/annolex/media/
+    Alias /static/ /usr/local/src/Django-1.5.1/django/contrib/admin/static/
 
     <Directory /usr/local/django/projects/annolex/media>
         Order deny,allow
