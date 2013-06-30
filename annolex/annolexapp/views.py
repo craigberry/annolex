@@ -202,8 +202,8 @@ def review(request):
     if request.method == 'POST':
         which_post = request.POST.__getitem__('which_post')
         if 'Status' in which_post:
-            if not (request.user.is_authenticated() and request.user.is_superuser):
-                return HttpResponse("You must be logged in as a supersuser to approve corrections.")
+            if not (request.user.is_authenticated() and  'annolexapp.can_review' in request.user.get_all_permissions()):
+                return HttpResponse("You must be logged in and have review permission to approve corrections.")
 
             correction_id = request.POST.__getitem__('id')
             status = 0

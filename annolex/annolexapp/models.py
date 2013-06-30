@@ -65,6 +65,9 @@ class Correction(models.Model):
 
     class Meta:
         ordering = ('-corrected_date',)
+        permissions = (
+            ("can_review", "Can review corrections made by others"),
+        )
         
     def __unicode__(self):
         return  "%s %s: %s (%s, %s) to %s (%s, %s)" %  (

@@ -77,7 +77,7 @@
           <td>{{ correction.applied_by }} <br> {{ correction.applied_date }}</td>
 
           <td>
-          {% if user.is_authenticated and user.is_superuser %}
+              {% if user.is_authenticated and 'annolexapp.can_review' in user.get_all_permissions %}
 
             <form action="" method="post" onsubmit="">
               <select id="select_status" 
