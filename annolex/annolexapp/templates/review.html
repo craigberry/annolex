@@ -47,7 +47,10 @@
       {% for correction in corrections.object_list %}
         <tr>
           <td>
-              {{ correction.get_operation_display }} {{ correction.wordid_from.wordid }}:
+              {% ifnotequal correction.get_operation_display "Update" %}<b>{% endifnotequal %}
+               {{ correction.get_operation_display }} 
+              {% ifnotequal correction.get_operation_display "Update" %}</b>{% endifnotequal %}
+               {{ correction.wordid_from.wordid }}:
               {{ correction.wordid_from.KwicL }} 
               <br>
               {% ifnotequal correction.operation 2 %}<del>{% endifnotequal %}
