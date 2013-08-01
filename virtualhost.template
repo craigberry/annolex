@@ -13,6 +13,11 @@
         Allow from all
     </Directory>
     
+    <Directory /usr/local/src/Django-1.5.1/django/contrib/admin/static/>
+        Order deny,allow
+        Allow from all
+    </Directory>
+    
     WSGIScriptAlias / /usr/local/django/projects/annolex/apache/django.wsgi
 
     <Directory /usr/local/django/projects/annolex/apache>
