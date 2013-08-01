@@ -288,7 +288,7 @@ def record_status(correction, status, user_id):
     sql = "UPDATE annolexapp_correction SET status_by_id = %s, status_date = now(), status=%s WHERE id = %s"
     cursor.execute(sql, [user_id, status, correction.id])
 
-    if correction.operation == 1: # Update
+    if correction.operation == 1 and status == 2: # Update
     
         sql = '''UPDATE  annolexapp_annolex a
 INNER JOIN annolexapp_correction c
