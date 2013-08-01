@@ -295,7 +295,8 @@ INNER JOIN annolexapp_correction c
 ON a.wordid = c.wordid_from_id
 SET spelling = CASE WHEN LENGTH(c.spelling_to) > 0 THEN c.spelling_to ELSE a.spelling END,
 lemma = CASE WHEN LENGTH(c.lemma_to) > 0 THEN c.lemma_to ELSE a.lemma END,
-pos = CASE WHEN LENGTH(c.pos_to) > 0 THEN c.pos_to ELSE a.pos END
+pos = CASE WHEN LENGTH(c.pos_to) > 0 THEN c.pos_to ELSE a.pos END,
+preselected = 0
 WHERE c.id = %s
 '''
         cursor.execute(sql, [correction.id])
