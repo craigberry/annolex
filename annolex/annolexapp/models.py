@@ -144,7 +144,7 @@ OPERATOR_CHOICES = (
 )
 
 SEARCH_SORT_CHOICES = (
-    (1, 'Word ID'),
+    (1, 'Text Order'),
     (2, 'Lemma, POS, Spelling'),
     (3, 'Spelling, Lemma, POS'),
     (4, 'POS, Lemma, Spelling'),
@@ -165,7 +165,6 @@ class SearchForm(forms.Form):
     spelling   = forms.CharField(max_length=45, required=False)
     lemma      = forms.CharField(max_length=45, required=False)
     pos        = forms.CharField(max_length=10, required=False, label='POS')
-    wordid     = forms.CharField(max_length=45, required=False, label='Word ID')
     citation   = forms.CharField(max_length=30, required=False, label='Citation')
     matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')

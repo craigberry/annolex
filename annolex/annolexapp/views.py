@@ -22,7 +22,6 @@ def annolex(request):
         spelling_search = annolex_session['spelling_search']
         lemma_search = annolex_session['lemma_search']
         pos_search = annolex_session['pos_search']
-        wordid_search = annolex_session['wordid_search']
         citation_search = annolex_session['citation_search']
         matchchoice = annolex_session['matchchoice']
         opchoice = annolex_session['opchoice']
@@ -33,7 +32,6 @@ def annolex(request):
         spelling_search = None
         lemma_search = None
         pos_search = None
-        wordid_search = None
         citation_search = None
         matchchoice = None
         opchoice = None
@@ -87,7 +85,6 @@ def annolex(request):
             spelling_search = request.POST.__getitem__('spelling')
             lemma_search = request.POST.__getitem__('lemma')
             pos_search = request.POST.__getitem__('pos')
-            wordid_search = request.POST.__getitem__('wordid')
             citation_search = request.POST.__getitem__('citation')
             matchchoice = request.POST.__getitem__('matchchoice')
             opchoice = request.POST.__getitem__('opchoice')
@@ -125,8 +122,6 @@ def annolex(request):
      # Yes, wordid.  Because the wordid starts with the text ID, this should work.
     if text_search:
         qobj.append (Q(wordid__istartswith=text_search))
-    if wordid_search:
-        qobj.append (Q(wordid__istartswith=wordid_search))
     if citation_search:
         qobj.append (Q(citation__istartswith=citation_search))
 
@@ -166,7 +161,6 @@ def annolex(request):
                                            'spelling_search': spelling_search,
                                            'lemma_search':    lemma_search,
                                            'pos_search':      pos_search,
-                                           'wordid_search':   wordid_search,
                                            'citation_search': citation_search,
                                            'matchchoice':     matchchoice,
                                            'opchoice':        opchoice,
