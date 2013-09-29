@@ -23,6 +23,9 @@ class AnnoLex(models.Model):
         doc = (self.wordid.partition('-')[0]).partition('_')[0]
         return '%s/%s-%05d' % (doc, doc, page)
 
+    def get_textid(self):
+         return self.wordid.partition('-')[0]
+
 admin.site.register(AnnoLex)
 
 # These are the correction operations that we log against the main class.
