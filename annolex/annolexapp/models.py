@@ -14,7 +14,7 @@ class AnnoLex(models.Model):
     spellcolfreq = models.IntegerField()
     wordid       = models.CharField(max_length=45,primary_key=True)
     preselected  = models.BooleanField(default=0)
-    citation     = models.CharField(max_length=30)
+    citation     = models.CharField(max_length=30,db_index=True)
 
     def get_image_url(self):
         if not self.citation:
@@ -166,6 +166,7 @@ class SearchForm(forms.Form):
     lemma      = forms.CharField(max_length=45, required=False)
     pos        = forms.CharField(max_length=10, required=False, label='POS')
     wordid     = forms.CharField(max_length=45, required=False, label='Word ID')
+    citation   = forms.CharField(max_length=30, required=False, label='Citation')
     matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')
     sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort')
