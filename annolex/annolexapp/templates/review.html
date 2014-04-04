@@ -53,10 +53,11 @@
                {{ correction.wordid_from.get_textid }}-{{ correction.wordid_from.citation }}:
               {{ correction.wordid_from.KwicL }} 
               <br>
-              {% ifnotequal correction.operation 2 %}<del>{% endifnotequal %}
+              {% ifnotequal correction.operation 2 %}<span style="background-color:yellow;">{% endifnotequal %}
               {{ correction.spelling_from }} ({{ correction.lemma_from }}, 
-              {{ correction.pos_from }}){% ifnotequal correction.operation 2 %}</del>{% endifnotequal %}
+              {{ correction.pos_from }}){% ifnotequal correction.operation 2 %}</span>{% endifnotequal %}
               {% ifnotequal correction.operation 3 %}
+              <span style="background-color:#50f733;">
               {% if correction.spelling_to %} 
                  <b>{{ correction.spelling_to }}</b> 
               {% else %}
@@ -72,6 +73,7 @@
               {% else %}
                  {{ correction.pos_from }})
               {% endif %}
+              </span>
               {% endifnotequal %}
               {{ correction.wordid_from.KwicR }}
               <br> {{ correction.annotation }}</td>
