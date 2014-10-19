@@ -172,7 +172,7 @@ class SearchForm(forms.Form):
     matchchoice = forms.ChoiceField(choices=SEARCH_MATCH_CHOICES, initial=1, required=False, label='Match')
     opchoice   = forms.ChoiceField(choices=OPERATOR_CHOICES, initial=1, required=False, label='Combine')
     sortchoice = forms.ChoiceField(choices=SEARCH_SORT_CHOICES, initial=1, required=False, label='Sort')
-    filterchoice = forms.ChoiceField(choices=SEARCH_FILTER_CHOICES, initial=1, required=False, label='Filter')
+    filterchoice = forms.ChoiceField(choices=SEARCH_FILTER_CHOICES, initial=2, required=False, label='Filter')
 
 
 FILTER_APPLIED_CHOICES = (
