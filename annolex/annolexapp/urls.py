@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^accounts/logout/$', logout, {'next_page': '/'}),
     url(r'^review/$', review),
     url(r'^about/$', TemplateView.as_view(template_name='about.html')),
+    url(r'^defects/(?P<path>.*)$', TemplateView.as_view(template_name='defects.html')),
 )
 
 if settings.DEBUG:

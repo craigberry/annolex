@@ -1,0 +1,25 @@
+<html>
+<head>
+<script type="text/javascript">
+function redirect_to_text_search() {
+  var path = location.pathname.split('/')[2];
+  document.getElementById("id_textid").value = path;
+  document.getElementById("defect_redirect").submit();
+}
+</script>
+</head>
+<body onload="redirect_to_text_search()" style="display:none;">
+<form id="defect_redirect" action="/" method="POST">
+<input id="id_textid" name="textid" value="" />
+<input id="id_filterchoice" name="filterchoice" value="2" />
+<input name="which_post" value="Search" />
+<input id="id_spelling" maxlength="45" name="spelling" type="text" />
+<input id="id_lemma" maxlength="45" name="lemma" type="text" />
+<input id="id_pos" maxlength="10" name="pos" type="text" /><
+<input id="id_citation" maxlength="30" name="citation" type="text" />
+<input id="id_matchchoice" name="matchchoice" value="1" />
+<input id="id_opchoice" name="opchoice" value="1" />
+<input id="id_sortchoice" name="sortchoice" value="1" />
+</form>
+</body>
+</html>
