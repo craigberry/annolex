@@ -1,0 +1,1 @@
+AnnoLex is a collaborative data curation tool for lemmatized and morphosyntactically tagged textual data. It is built using the Django framework and it stores its data in a MySQL database.
