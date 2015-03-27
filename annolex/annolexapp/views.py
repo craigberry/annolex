@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 import operator
 
+import json
+from django.db import connection
 
 def annolex(request):
     current_word = AnnoLex()
@@ -178,6 +180,27 @@ def annolex(request):
     return HttpResponse(t.render(c))
 
 ####
+
+def getcounts(request):
+
+    eebo_id = request.GET.get('eebo_id', 'ERROR: MISSING EEBOID')
+
+    sql = "select substring_index(wordid, '-', 1) as eebo_id, count(*) as num_defects " \
+          + "from annolexapp_annolex where preselected = 1 and wordid like %s " \
+          + "group by substring_index(wordid, '-', 1);"
+
+    cursor = connection.cursor()
+    cursor.execute(sql, eebo_id + "-%")
+    row = cursor.fetchone()
+    cursor.close()
+
+    if row is None:
+        eebo_id = "Invalid"
+        defects_remaining = 0
+    else:
+        defects_remaining = row[1]
+
+    return HttpResponse(json.dumps({"volume": eebo_id, "defects_remaining": defects_remaining}))
 
 ####
 

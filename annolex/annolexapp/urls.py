@@ -3,7 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
-from annolex.annolexapp.views import annolex, review
+from annolex.annolexapp.views import annolex, review, getcounts
 from django.contrib.auth.views import login, logout
 from annolex.annolexapp.models import Correction
 from django.conf import settings
@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^review/$', review),
     url(r'^about/$', TemplateView.as_view(template_name='about.html')),
     url(r'^defects/(?P<path>.*)$', TemplateView.as_view(template_name='defects.html')),
+    url(r'^getcounts/$', getcounts),
 )
 
 if settings.DEBUG:
