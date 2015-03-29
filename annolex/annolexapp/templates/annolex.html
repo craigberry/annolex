@@ -77,9 +77,17 @@
             </ul>
             {% endif %}
     </div>
+   </td></tr>
+    </form>
+   <tr><td>
+    <form action="" method="POST">
+         <input type="button"
+            value="Find Libraries"
+            onClick="url='http://ada.artsci.wustl.edu:5000/libraries?eebo_id=' + document.getElementById('id_textid').value; window.open(url);"
+        />
+    </form>
     </td></tr>
     </table>
-    </form>
   </div>
   <div id="editbox">
     <form action="" method="POST">
