@@ -1,15 +1,21 @@
-AnnoLex is a collaborative data curation tool for lemmatized and
-morphosyntactically tagged textual data. It is built using the Django
-framework and it stores its data in a MySQL database.
+AnnoLex is a collaborative data curation tool for textual data. Its
+correction screen provides the ability to suggest corrections,
+one word at a time, to a transcribed, lemmatized and morphosyntactically
+tagged text or corpus. It's review screen allows the same or different
+user to make a second pass through the corrections, approving or
+rejecting them.
 
-Copyright (c) 2010 Craig A. Berry
+AnnoLex is built using the Django framework and stores its data in a
+MySQL database.
+
+Copyright (c) 2010, 2015 Craig A. Berry
 
 Released under the Artistic License 2.0:
    http://www.perlfoundation.org/attachment/legal/artistic-2_0.txt
 
 Prerequisites:
 
-The Django framework 1.0 or later    http://www.djangoproject.org/
+The Django framework 1.5 or later    http://www.djangoproject.org/
 A MySQL database server              http://www.mysql.com/
 MySQLdb Python interface to MySQL    http://mysql-python.sourceforge.net/
 Apache web server                    http://www.apache.org/
@@ -20,9 +26,10 @@ be swapped out without radical changes to the application.
 
 Usage Summary:
 
-The project is currently a bare bones prototype.  There is no
-programmer-oriented documentation and no user documentation except
-the About page.  There are no build procedures, Makefiles,  or 
+Though it has been used successfully to produce tens of thousands of
+corrections to the EEBO-TCP texts, the project is still rather bare bones.
+There is no programmer-oriented documentation and no user documentation
+except the About page.  There are no build procedures, Makefiles,  or
 installers.  The basic steps to follow to run the application are:
 
 1.) Install all the prerequisite software listed above.
@@ -43,7 +50,7 @@ installers.  The basic steps to follow to run the application are:
     your data.  For now, the column names are the only indication of what
     goes in them, which should be sufficient in most cases.
 
-6.) Modify files containg paths to reflect your local environment.  That 
+6.) Modify files containing paths to reflect your local environment.  That
     should just be annolex/apache/django.wsgi.
     
 7.) Deployment consists of moving all the files under annolex/ to an 
