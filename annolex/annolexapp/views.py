@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from annolex.annolexapp.models import AnnoLex, CorrectionForm, SearchForm, Correction, ReviewChoicesForm, TextList
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import render_to_response
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Q
 import operator
 
@@ -325,4 +325,53 @@ WHERE c.id = %s
         cursor.execute(sql, [correction.id])
 
     transaction.commit_unless_managed()
+
+####
+
+@permission_required('annolexapp.can_review')
+def get_approved_corrections(request):
+    import time
+    import csv
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="annolex_corrections_' \
+                                      + time.strftime("%Y%m%d%H%m") + '.csv"'
+
+    writer = csv.writer(response, delimiter="\t", quoting=csv.QUOTE_NONE, quotechar=None, escapechar="\\")
+
+    sql = "SELECT CASE c.operation " \
+           + "  WHEN 1 THEN 'UPDATE' " \
+           + "  WHEN 2 THEN 'INSERT' " \
+           + "  WHEN 3 THEN 'DELETE' " \
+           + "END AS operation,  " \
+           + "c.spelling_from, c.spelling_to,  " \
+           + "c.lemma_from, c.lemma_to,  " \
+           + "c.pos_from, c.pos_to, " \
+           + "c.wordid_from_id, c.wordid_to,  " \
+           + "u.username AS corrector, " \
+           + "CAST(c.corrected_date AS char) AS corrected_date, " \
+           + "u2.username AS approver, " \
+           + "CAST(c.status_date AS char) AS approved_date, " \
+           + "REPLACE(annotation, '\r\n', '|') AS annotation " \
+    + "FROM annolexapp_correction c " \
+    + "INNER JOIN auth_user u " \
+    + "ON u.id = c.corrected_by_id " \
+    + "INNER JOIN auth_user u2 " \
+    + "ON u2.id = c.status_by_id " \
+    + "WHERE c.status = 2 -- approved " \
+    + "  AND c.applied_date IS NULL; "
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+
+    col_names = [desc[0] for desc in cursor.description]
+    writer.writerow(col_names)
+
+    for row in cursor.fetchall():
+        writer.writerow([s.encode("utf-8") for s in row])
+
+    cursor.close()
+
+    return response
+####
 

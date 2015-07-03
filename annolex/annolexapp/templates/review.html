@@ -30,6 +30,15 @@
     </table>
     </form>
    </div>
+  {% if user.is_authenticated and 'annolexapp.can_review' in user.get_all_permissions %}
+
+    <form action="/get_approved_corrections/">
+         <input type="submit"
+            value="Download Approved Corrections"
+        />
+    </form>
+
+  {% endif %}
   </div>
   <div id="corrections">
     <table class="wordlist">
