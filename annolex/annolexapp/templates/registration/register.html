@@ -1,0 +1,20 @@
+{% extends "start.html" %}
+
+{% block title %}Create an account{% endblock %}
+
+{% block content %}
+<div id="main">
+<div id="search" style="margin: 10px; width: 350px">
+  <form action="" method="post">
+  <table style="margin: 10px">
+    <h3>Create an account</h1>
+
+      {{ form.as_table }}
+      <tr></tr>
+      <tr><td><input type="submit" value="Create the account"></td><td></td></tr>
+      <tr></tr>
+  </table>
+  </form>
+</div>
+</div>
+{% endblock %}

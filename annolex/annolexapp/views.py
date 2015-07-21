@@ -332,7 +332,8 @@ WHERE c.id = %s
 def get_approved_corrections(request):
     import time
     import csv
-
+    from django.utils.encoding import force_bytes
+    
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="annolex_corrections_' \
                                       + time.strftime("%Y%m%d%H%m") + '.csv"'
@@ -369,9 +370,48 @@ def get_approved_corrections(request):
 
     for row in cursor.fetchall():
         writer.writerow([s.encode("utf-8") for s in row])
-
+        
     cursor.close()
 
     return response
 ####
 
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.forms import EmailField
+from django.utils.translation import ugettext_lazy as _
+
+class UserCreationForm(UserCreationForm):
+    email = EmailField(label=_("Email address"), required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(UserCreationForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
+ 
+    def save(self, commit=True):
+        user = super(UserCreationForm, self).save(commit=False)
+        user.email = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return HttpResponseRedirect("/accounts/login/")
+    else:
+        form = UserCreationForm()
+    return render(request, "registration/register.html", {
+        'form': form,
+    })
