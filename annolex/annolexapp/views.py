@@ -369,7 +369,7 @@ def get_approved_corrections(request):
     writer.writerow(col_names)
 
     for row in cursor.fetchall():
-        writer.writerow([s.encode("utf-8") for s in row])
+        writer.writerow([force_bytes(s, "utf-8").decode("utf-8").encode("utf-8") for s in row])
         
     cursor.close()
 
